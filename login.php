@@ -1,62 +1,46 @@
 <?php
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(E_ALL);
+function registerUser(){
+	$regVariables = array('firstname','lastname','username','email','password','conpassword');
+	
+	if(!array_diff($regVariables, array_keys($_POST))){
+		
+		//validate email 
+		$email = $_POST["email"];
+		if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+			echo '<br>Invalid email format<br>';
+		}
+		
+		//check if passwords match
+		if($_POST['password'] == $_POST['conpassword']){
+			echo 'Passwords match';
+		}
+		else {
+			echo 'Passwords do not match';
+		}
+		
+		// next step is to create a new user in database
+	}
+}
 
+function loginUser(){
+	$username = "";
+	$password = "";
+	if(isset($_POST['login_username']) && isset($_POST['login_password'])){
+		$username = $_POST['login_username'];
+		$password = $_POST['login_password'];
+		
+		// check if the username and password exist in database
+	}
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Otamot</title>
-	<!--<script>
-		function regForm(){
-			//create a form
-			var rf = document.createElement("form");
-			rf.setAttribute('method',"post");
-			
-			//create input elements (first, last, username, email, password, confirm password)
-			var fname = document.createElement("input");
-			fname.type = "text";
-			fname.name = "firstname";
-
-			var lname = document.createElement("input");
-			lname.type = "text";
-			lname.name = "lastname";
-			
-			var uname = document.createElement("input");
-			uname.type = "text";
-			uname.name = "username";
-
-			var email = document.createElement("input");
-			email.type = "text";
-			email.name = "email";
-		
-			var password = document.createElement("input");
-			password.type = "password";
-			password.name = "password";
-	
-			var con_pass = document.createElement("input");
-			con_pass.type = "password";
-			con_pass.name = "conpassword";
-
-			var submit = document.createElement("input");
-			submit.type = "submit";
-			submit.value = "Submit";
-
-			// add all the elements to the form
-			rf.appendChild(fname);
-			rf.appendChild(lname);
-			rf.appendChild(uname);
-			rf.appendChild(email);
-			rf.appendChild(password);
-			rf.appendChild(con_pass);
-			rf.appendChild(submit);
-
-			// adding the form inside the body
-			// $("body").append(f); using jQuery or
-			document.getElementsByTagName('body')[0].appendChild(rf);
-			
-		}
-	</script>
-	-->
 
 	<script>
 		function formShow(a)
@@ -78,43 +62,28 @@
 		<button onclick="formShow(1)">Register</button>
 		<button onclick="formShow(2)">Login</button>
 
-		<form id="register_form">
-			<input type="text" name="firstname" required>
-			<input type="text" name="lastname" required>
-			<input type="text" name="username" required>
-			<input type="text" name="email" required>
-			<input type="password" name="password" required>
-			<input type="password" name="conpassword" required>
-			<input type="submit" value="Submit">
+		<form id="register_form" method="POST">
+			First Name: <input type="text" name="firstname" required><br>
+			Last Name: <input type="text" name="lastname" required><br>
+			Username: <input type="text" name="username" required><br>
+			Email: <input type="text" name="email" required><br>
+			Password: <input type="password" name="password" required><br>
+			Confirm Password: <input type="password" name="conpassword" required><br>
+			<input type="submit" value="Submit" name="submit">
 			
 		</form>
 
-		<form id="login_form">	
-			<input type="text" name="login_username" required>
-			<input type="password" name="login_password" required>
-			<input type="submit" value="Submit">
-		</form>
-		<input type="submit" value="Register" onclick="regForm()">
-		<input type="submit" value="Login">
-		
-		<!-- Homepage will have a welcoming title as well as two buttons to choose from: Register or Login
-		
-		<h1>SIMPLE LOGIN</h1>
-		<form method="POST">
-			Username <input type="text" name="username" class="text" autocomplete="off" required>
-			Password <input type="password" name="password" class="text" required>
-			<input type="Submit" name="submit" id="sub">
+		<form id="login_form" style="display:none" method="POST">	
+			Username or Email: <input type="text" name="login_username" required><br>
+			Password: <input type="password" name="login_password" required><br>
+			<input type="submit" value="Submit" name="submit">
 		</form>
 		
-		<h1>REGISTER</h1>
-		<form method="POST">
-			First Name: <input type="text" name="firstname" class="text" autocomplete="off" required>
-			Last Name: <input type="text" name="lastname" class="text" autocomplete="off" required>
-			Email: <input type="text" name="email" class="text" autocomplete="off" required>
-			Password: <input type="password" name="password" class="text" required>
-			<input type="Submit" name="submit" id="sub">
-		</form>
-		-->
-	
+
+		<?php 
+		if(isset($_POST['submit'])){
+			registerUser();
+		}
+		?>
 </body>
 </html>
