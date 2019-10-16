@@ -2,9 +2,12 @@
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
+
+require('initDB.php');
+
 function registerUser(){
 	$regVariables = array('firstname','lastname','username','email','password','conpassword');
-	
+	$hash = "";
 	if(!array_diff($regVariables, array_keys($_POST))){
 		
 		//validate email 
@@ -15,14 +18,21 @@ function registerUser(){
 		
 		//check if passwords match
 		if($_POST['password'] == $_POST['conpassword']){
-			echo 'Passwords match';
+			echo 'Passwords match<br>';
 		}
 		else {
 			echo 'Passwords do not match';
 		}
 		
+		// (hash+salt)ing passwords
+		$hash = crypt($_POST["password"],"$1$");
+		
+		$inputArray = array($_POST['username'], $hash, $_POST['firstname'], $_POST['lastname'], $_POST['email']);
 		// next step is to create a new user in database
+		addUser($db, $inputArray);
 	}
+
+
 }
 
 function loginUser(){
