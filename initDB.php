@@ -39,13 +39,14 @@ function addUser($db,$inputArray){
 	$lastname = $inputArray[3];
 	$email = $inputArray[4];
 	
-	$stmt->execute();
-
+	$r = $stmt->execute();
+	return $r;
 }
 
 try{
 	$db = new PDO($connect_string, $username, $password);
 	$result = createTable($db);
+	
 				
 } catch(Exception $e) {
 	echo $e->getMessage();

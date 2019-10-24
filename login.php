@@ -3,9 +3,12 @@ ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 
-require('initDB.php');
+//include 'initDB.php';
+require_once('dbHandler.php');
+require_once('database.class.php');
 
-function registerUser(){
+
+function registerUser(User $user){
 	$regVariables = array('firstname','lastname','username','email','password','conpassword');
 	$hash = "";
 	if(!array_diff($regVariables, array_keys($_POST))){
@@ -29,7 +32,7 @@ function registerUser(){
 		
 		$inputArray = array($_POST['username'], $hash, $_POST['firstname'], $_POST['lastname'], $_POST['email']);
 		// next step is to create a new user in database
-		addUser($db, $inputArray);
+		$user->addUser($inputArray);
 	}
 
 
@@ -79,20 +82,30 @@ function loginUser(){
 			Email: <input type="text" name="email" required><br>
 			Password: <input type="password" name="password" required><br>
 			Confirm Password: <input type="password" name="conpassword" required><br>
-			<input type="submit" value="Submit" name="submit">
+			<input type="submit" value="Submit" name="reg_submit">
 			
 		</form>
 
 		<form id="login_form" style="display:none" method="POST">	
 			Username or Email: <input type="text" name="login_username" required><br>
 			Password: <input type="password" name="login_password" required><br>
-			<input type="submit" value="Submit" name="submit">
+			<input type="submit" value="Submit" name="login_submit">
 		</form>
 		
 
 		<?php 
-		if(isset($_POST['submit'])){
-			registerUser();
+
+		$mypdo = new MyPDO();
+		$user = new User();
+
+		if(isset($_POST['reg_submit'])){
+
+
+			registerUser($user);
+		}
+
+		if(isset($_POST['login_submit'])){
+			
 		}
 		?>
 </body>
