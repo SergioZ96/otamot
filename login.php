@@ -4,8 +4,10 @@ ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 
 //include 'initDB.php';
-require_once('dbHandler.php');
-require_once('database.class.php');
+require_once('mypdo.class.php');
+require_once('user.class.php');
+
+session_start();
 
 
 function registerUser(User $user){
@@ -21,7 +23,7 @@ function registerUser(User $user){
 		
 		//check if passwords match
 		if($_POST['password'] == $_POST['conpassword']){
-			echo 'Passwords match<br>';
+			
 		}
 		else {
 			echo 'Passwords do not match';
@@ -38,15 +40,27 @@ function registerUser(User $user){
 
 }
 
-function loginUser(){
-	$username = "";
-	$password = "";
-	if(isset($_POST['login_username']) && isset($_POST['login_password'])){
-		$username = $_POST['login_username'];
-		$password = $_POST['login_password'];
-		
-		// check if the username and password exist in database
+function loginUser(User $user){
+	$logVariables = array('login_username','login_password');
+	$hash = "";
+	if(!array_diff($logVariables, array_keys($_POST))){
+
+		// hashed login password to match password stored in database
+		$hash = crypt($_POST["login_password"],"$1$");
+
+		$inputArray = array($_POST["login_username"], $hash);
+		$login_result = $user->checkUser($inputArray);
+		if($login_result){
+			//echo "Welcome" . $_POST['login_username'];
+			$_SESSION['login_username'] = $_POST['login_username'];
+
+			header("location: welcome.php");
+		}
+		else {
+			echo "Invalid username/password";
+		}
 	}
+		
 }
 ?>
 
@@ -100,12 +114,11 @@ function loginUser(){
 
 		if(isset($_POST['reg_submit'])){
 
-
 			registerUser($user);
 		}
 
 		if(isset($_POST['login_submit'])){
-			
+			loginUser($user);
 		}
 		?>
 </body>
