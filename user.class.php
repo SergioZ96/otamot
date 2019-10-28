@@ -30,6 +30,26 @@ class User
 			$this->stmt->execute();
 			return $this->stmt;
 	}
+
+	public function checkUser($inputArray){
+
+		$login_username = $inputArray[0];
+		$login_password = $inputArray[1];
+
+		$this->stmt = $this->db->prep("SELECT password FROM Users WHERE username=:username1 OR email=:username2");
+		
+		$this->stmt->bindParam(':username1', $login_username);
+		$this->stmt->bindParam(':username2', $login_username);
+		$this->stmt->execute();
+		$user = $this->stmt->fetch(PDO::FETCH_ASSOC);
+
+		if($login_password == $user['password']){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }
 	
 ?>
