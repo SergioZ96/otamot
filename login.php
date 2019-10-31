@@ -13,7 +13,16 @@ session_start();
 function registerUser(User $user){
 	$regVariables = array('firstname','lastname','username','email','password','conpassword');
 	$hash = "";
-	if(!array_diff($regVariables, array_keys($_POST))){
+
+	if(($user->username_available($_POST["username"])) == true){
+		echo '<br>Username is not available<br>';
+	}
+
+	elseif(($user->userExists($_POST["email"])) == true){
+		echo '<br>User already exists with email<br>';
+	}
+
+	elseif(!array_diff($regVariables, array_keys($_POST))){
 		
 		//validate email 
 		$email = $_POST["email"];

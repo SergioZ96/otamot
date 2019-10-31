@@ -50,6 +50,25 @@ class User
 			return false;
 		}
 	}
+
+	public function username_available($username){
+
+		$this->stmt = $this->db->prep("SELECT username FROM Users WHERE username=:username");
+		$this->stmt->bindParam(':username', $username);
+		$username_check = $this->stmt->execute();
+		
+		return $username_check;
+	}
+
+	public function userExists($email){
+
+		$this->stmt = $this->db->prep("SELECT email FROM Users WHERE email=:email");
+		$this->stmt->bindParam(':email', $email);
+		$email_check = $this->stmt->execute();
+
+		return $email_check;
+	}
+
 }
 	
 ?>
