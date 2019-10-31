@@ -14,10 +14,12 @@ function registerUser(User $user){
 	$regVariables = array('firstname','lastname','username','email','password','conpassword');
 	$hash = "";
 
-	if(($user->username_available($_POST["username"])) == true){
+	// check if username is available by checking in database
+	if(($user->username_available($_POST["username"])) == false){
 		echo '<br>Username is not available<br>';
 	}
 
+	// check if user already exists by running email through database
 	elseif(($user->userExists($_POST["email"])) == true){
 		echo '<br>User already exists with email<br>';
 	}

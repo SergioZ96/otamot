@@ -55,18 +55,32 @@ class User
 
 		$this->stmt = $this->db->prep("SELECT username FROM Users WHERE username=:username");
 		$this->stmt->bindParam(':username', $username);
-		$username_check = $this->stmt->execute();
+		//NOTE:
+		// execute returns true if prepared statement executes. Doesn't matter if values are not found in the database
+		$this->stmt->execute();
+		$username_check = $this->stmt->fetch(PDO::FETCH_ASSOC);
 		
-		return $username_check;
+		//comparing given username to what was fetched from the database
+		if($username == $username_check["username"]){
+			return false;
+		}
+
+		return true;
 	}
 
 	public function userExists($email){
 
 		$this->stmt = $this->db->prep("SELECT email FROM Users WHERE email=:email");
 		$this->stmt->bindParam(':email', $email);
-		$email_check = $this->stmt->execute();
+		$this->stmt->execute();
+		$email_check = $this->stmt->fetch(PDO::FETCH_ASSOC);
 
-		return $email_check;
+		//comparing given email to what was fetched from the database
+		if($email == $email_check["email"]){
+			return true;
+		}
+
+		return false;
 	}
 
 }
