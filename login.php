@@ -1,16 +1,27 @@
 <?php
+// ini_set() function allows a script to temporarily override a setting in PHP's configuration file.
+// we are turning the display_errors setting to on, which is represented by the number 1. The default value is set to off
+// as well as display_startup_errors, which is used to find errors during PHP's startup sequence
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 
-//include 'initDB.php';
 require_once('mypdo.class.php');
 require_once('user.class.php');
 
+// starting a session necessary for each individual user trying to use the website
 session_start();
 
 
 function registerUser(User $user){
+	/*
+		Args: User object
+		Returns: no return value
+		Function: verifies if username is available, if user already exists, if email is in correct format and if passwords can be confirmed upon registration.
+				  If credentials check out, it will add/create new user to the Users table in the database by calling the User objects class method 'addUser'
+	*/
+
+
 	$regVariables = array('firstname','lastname','username','email','password','conpassword');
 	$hash = "";
 
@@ -52,6 +63,13 @@ function registerUser(User $user){
 }
 
 function loginUser(User $user){
+	/*
+		Args: User object
+		Returns: no return value
+		Function: checks the user login credentials to verify presence in the database through password and user comparison by calling the User objects class method 'checkUser'
+				  If the user credentials can be verified within the database, then the site will go to the welcome page
+	*/
+
 	$logVariables = array('login_username','login_password');
 	$hash = "";
 	if(!array_diff($logVariables, array_keys($_POST))){
@@ -62,9 +80,10 @@ function loginUser(User $user){
 		$inputArray = array($_POST["login_username"], $hash);
 		$login_result = $user->checkUser($inputArray);
 		if($login_result){
-			//echo "Welcome" . $_POST['login_username'];
+			//username is added to the $_SESSION array
 			$_SESSION['login_username'] = $_POST['login_username'];
 
+			// will jump the welcome page
 			header("location: welcome.php");
 		}
 		else {

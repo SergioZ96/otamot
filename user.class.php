@@ -7,10 +7,16 @@ class User
 	
 	public function __construct()
 	{
-		$this->db = MyPDO::instance();
+		$this->db = MyPDO::instance(); // passing the MyPDO instance which contains the PDO and assigning it to $this->db
 	}
 	
 	public function addUser($inputArray){
+
+		/*
+			Args: array of user registration values
+			Returns: 
+			Function: Inserts new users into the Users table
+		*/
 
 			$username = $inputArray[0];
 			$password = $inputArray[1];
@@ -33,6 +39,11 @@ class User
 
 	public function checkUser($inputArray){
 
+		/*
+			Args: array of user login values
+			Returns: bool, true if password matches password associated with given username. Otherwise, false.
+		*/
+
 		$login_username = $inputArray[0];
 		$login_password = $inputArray[1];
 
@@ -53,6 +64,12 @@ class User
 
 	public function username_available($username){
 
+		/*
+			Args: string (username)
+			Returns: bool, false if usename is in the database (meaning not available for new user to register as). Otherwise true.
+
+		*/
+
 		$this->stmt = $this->db->prep("SELECT username FROM Users WHERE username=:username");
 		$this->stmt->bindParam(':username', $username);
 		//NOTE:
@@ -69,6 +86,11 @@ class User
 	}
 
 	public function userExists($email){
+
+		/*
+			Args: string (email)
+			Returns: bool, true if the user exists. Otherwise false.
+		*/
 
 		$this->stmt = $this->db->prep("SELECT email FROM Users WHERE email=:email");
 		$this->stmt->bindParam(':email', $email);

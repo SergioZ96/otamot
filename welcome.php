@@ -1,5 +1,6 @@
 <?php
 //include 'login.php';
+// session_start() is needed to access the $_SESSION array to obtain its values
 session_start();
 ?>
 

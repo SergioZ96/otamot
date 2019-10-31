@@ -25,7 +25,7 @@ class MyPDO{
 		{
 			if (self::$instance === null)
 			{
-				self::$instance = new self;
+				self::$instance = new self; // same as self::$instance = new MyPDO();
 			}
 			return self::$instance;
 		}
