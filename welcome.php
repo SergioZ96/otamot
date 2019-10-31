@@ -11,6 +11,9 @@ session_start();
 
     <body>
         <h1>Hello, <?php echo $_SESSION['login_username']; ?></h1>
+        <form action="logout.php" method="post">
+            <input type="submit" value="Sign Out" name="sign_out"/>
+        </form>
     </body>
 
 </html>

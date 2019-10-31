@@ -1,0 +1,43 @@
+body {
+    text-align: center;
+}
+
+.container {
+    margin: auto;
+    width: 500px;
+}
+
+.container input {
+    margin: auto;
+    width: 100%;
+}
+
+.regButton {
+    background-color: #46b44c;
+	color: white;
+	font-family: "Impact", Charcoal, sans-serif;
+	font-size: 20px;
+	border-radius: 5px;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+.regButton:hover {
+    background-color: white;
+	color: black;
+}
+
+.logButton {
+    background-color: #4682b4;
+	color: white;
+	font-family: "Impact", Charcoal, sans-serif;
+	font-size: 20px;
+	border-radius: 5px;
+	padding: 5px 10px;
+	cursor: pointer;
+}
+
+.logButton:hover {
+    background-color: white;
+	color: black;
+}

@@ -69,6 +69,8 @@ function loginUser(User $user){
 <head>
 	<title>Otamot</title>
 
+	<link rel="stylesheet" href="css/login.css">
+
 	<script>
 		function formShow(a)
 		{
@@ -86,26 +88,29 @@ function loginUser(User $user){
 		<h1>Otamot Welcomes You!</h1>
 		<br>
 
-		<button onclick="formShow(1)">Register</button>
-		<button onclick="formShow(2)">Login</button>
+		<button class="regButton" onclick="formShow(1)">Register</button>
+		<button class="logButton" onclick="formShow(2)">Login</button>
 
-		<form id="register_form" method="POST">
-			First Name: <input type="text" name="firstname" required><br>
-			Last Name: <input type="text" name="lastname" required><br>
-			Username: <input type="text" name="username" required><br>
-			Email: <input type="text" name="email" required><br>
-			Password: <input type="password" name="password" required><br>
-			Confirm Password: <input type="password" name="conpassword" required><br>
-			<input type="submit" value="Submit" name="reg_submit">
-			
-		</form>
+		<div class="container">
+			<form id="register_form" method="POST">
+				First Name: <input type="text" name="firstname" required><br>
+				Last Name: <input type="text" name="lastname" required><br>
+				Username: <input type="text" name="username" required><br>
+				Email: <input type="text" name="email" required><br>
+				Password: <input type="password" name="password" required><br>
+				Confirm Password: <input type="password" name="conpassword" required><br>
+				<input type="submit" value="Submit" name="reg_submit">
+				
+			</form>
+		</div>
 
-		<form id="login_form" style="display:none" method="POST">	
-			Username or Email: <input type="text" name="login_username" required><br>
-			Password: <input type="password" name="login_password" required><br>
-			<input type="submit" value="Submit" name="login_submit">
-		</form>
-		
+		<div class="container">
+			<form id="login_form" style="display:none" method="POST">	
+				Username or Email: <input type="text" name="login_username" required><br>
+				Password: <input type="password" name="login_password" required><br>
+				<input type="submit" value="Submit" name="login_submit">
+			</form>
+		</div>
 
 		<?php 
 
