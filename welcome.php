@@ -8,13 +8,32 @@ session_start();
 <html>
     <head>
         <title>Welcome</title>
+        <link rel="stylesheet" href="css/welcome.css">
     </head>
 
     <body>
-        <h1>Hello, <?php echo $_SESSION['login_username']; ?></h1>
-        <form action="logout.php" method="post">
-            <input type="submit" value="Sign Out" name="sign_out"/>
-        </form>
+        <div class="grid_container">
+            <div class="topnav">
+                <ul>
+                    <li><a href="logout.php">Sign Out</a></li>
+                        <!--<form action="logout.php" method="post">
+                            <input type="submit" value="Sign Out" name="sign_out"/>
+                        </form>--></li>
+                    <li><a href="#settings">Settings</a></li>
+                    <li><a href="#search">Search</a></li>
+                    
+                </ul>
+            </div>
+
+            <div class="main">
+                <h1>Hello, <?php echo $_SESSION['login_username']; ?></h1>
+            </div>
+
+            <div class="messagebar">Messages</div>
+            
+            <div class="typebar"></div>
+            
+        </div>
     </body>
 
 </html>
