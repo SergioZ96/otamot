@@ -47,7 +47,7 @@ class User
 		$login_username = $inputArray[0];
 		$login_password = $inputArray[1];
 
-		$this->stmt = $this->db->prep("SELECT password FROM Users WHERE username=:username1 OR email=:username2");
+		$this->stmt = $this->db->prep("SELECT password, username FROM Users WHERE username=:username1 OR email=:username2");
 		
 		$this->stmt->bindParam(':username1', $login_username);
 		$this->stmt->bindParam(':username2', $login_username);
@@ -55,11 +55,10 @@ class User
 		$user = $this->stmt->fetch(PDO::FETCH_ASSOC);
 
 		if($login_password == $user['password']){
-			return true;
+			return $user['username'];
 		}
-		else {
-			return false;
-		}
+		
+		return false;
 	}
 
 	public function username_available($username){
