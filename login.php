@@ -79,9 +79,9 @@ function loginUser(User $user){
 
 		$inputArray = array($_POST["login_username"], $hash);
 		$login_result = $user->checkUser($inputArray);
-		if($login_result){
+		if($login_result != false){
 			//username is added to the $_SESSION array
-			$_SESSION['login_username'] = $_POST['login_username'];
+			$_SESSION['login_username'] = $login_result;
 
 			// will jump the welcome page
 			header("location: welcome.php");
