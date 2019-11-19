@@ -13,27 +13,29 @@ session_start();
 
     <body>
         <div class="grid_container">
-            <div class="topnav">
-                <ul>
-                    <li><a href="logout.php">Sign Out</a></li>
-                        <!--<form action="logout.php" method="post">
-                            <input type="submit" value="Sign Out" name="sign_out"/>
-                        </form>--></li>
-                    <li><a href="#settings">Settings</a></li>
-                    <li><a href="#search">Search</a></li>
-                    
-                </ul>
-            </div>
-
-            <div class="main">
-                <h1>Hello, <?php echo $_SESSION['login_username']; ?></h1>
-            </div>
-
-            <div class="messagebar">Messages</div>
-            
-            <div class="typebar"></div>
-            
+            <nav>
+                <div class="navbar">
+                    <h1>Otamot</h1>
+                    <div class="links">
+                        <a href="#search">Search</a>
+                        <a href="#settings">Settings</a>
+                        <a href="logout.php">Sign Out</a>
+                                <!--<form action="logout.php" method="post">
+                                    <input type="submit" value="Sign Out" name="sign_out"/>
+                                </form>-->
+                    </div>
+                </div>
+            </nav>
         </div>
+        <!--
+        <div class="main">
+            <h1>Hello, <?php //echo $_SESSION['login_username']; ?></h1>
+        </div>
+
+        <div class="messagebar">Messages</div>
+        
+        <div class="typebar"></div>
+        -->
     </body>
 
 </html>
