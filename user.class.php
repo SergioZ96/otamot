@@ -54,7 +54,7 @@ class User
 		$this->stmt->execute();
 		$user = $this->stmt->fetch(PDO::FETCH_ASSOC);
 
-		if($login_password == $user['password']){
+		if(password_verify($login_password, $user['password'])){
 			return $user['username'];
 		}
 		
