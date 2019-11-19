@@ -52,7 +52,7 @@ function registerUser(User $user){
 		}
 		
 		// (hash+salt)ing passwords
-		$hash = crypt($_POST["password"],"$1$");
+		$hash = password_hash($_POST["password"],PASSWORD_DEFAULT);
 		
 		$inputArray = array($_POST['username'], $hash, $_POST['firstname'], $_POST['lastname'], $_POST['email']);
 		// next step is to create a new user in database
@@ -75,9 +75,9 @@ function loginUser(User $user){
 	if(!array_diff($logVariables, array_keys($_POST))){
 
 		// hashed login password to match password stored in database
-		$hash = crypt($_POST["login_password"],"$1$");
+		//$hash = crypt($_POST["login_password"],"$1$");
 
-		$inputArray = array($_POST["login_username"], $hash);
+		$inputArray = array($_POST["login_username"], $_POST["login_password"]);
 		$login_result = $user->checkUser($inputArray);
 		if($login_result != false){
 			//username is added to the $_SESSION array
