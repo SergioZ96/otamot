@@ -20,22 +20,22 @@ session_start();
                         <a href="#search">Search</a>
                         <a href="#settings">Settings</a>
                         <a href="logout.php">Sign Out</a>
-                                <!--<form action="logout.php" method="post">
-                                    <input type="submit" value="Sign Out" name="sign_out"/>
-                                </form>-->
                     </div>
                 </div>
             </nav>
-        </div>
-        <!--
-        <div class="main">
-            <h1>Hello, <?php //echo $_SESSION['login_username']; ?></h1>
-        </div>
+            <div class="sidebar">
+                <input type="text" name="message_search" placeholder="Search Message...">
+            </div>
 
-        <div class="messagebar">Messages</div>
-        
-        <div class="typebar"></div>
-        -->
+            <div class="main">  
+                <h1>Hello, <?php echo $_SESSION['login_username']; ?></h1>
+            </div> 
+
+            <div class="messagebar">
+                <input type="text" name="message" placeholder="Type Your Message...">
+            </div>
+        </div>
+    
     </body>
 
 </html>

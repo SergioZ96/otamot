@@ -35,6 +35,5 @@ class MyPDO{
 			return $this->pdo->prepare($query);
 		}
 		
-		
 }
 ?>
