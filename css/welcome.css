@@ -17,15 +17,44 @@ html, body {
     grid-row: 2/4;
     background: grey;
     overflow: auto;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 125px 1fr;
 }
 
-    .sidebar input[type=text] {
-        width: 250px;
-        padding: 10px;
-        margin-top: 5px;
-        margin-left: 10px;
-        font-size: 16px;
+    .sidebar .newMess_and_Search {
+        grid-column: 1/1;
+        grid-row: 1/2;
+        border: 5px solid black;
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-rows: 75px 50px;
+        justify-items: center;
+        align-content: center;
         position: sticky;
+    }
+
+        .sidebar .newMess_and_Search input[type=submit] {
+            grid-column: 1/1;
+            grid-row: 1/2;
+            width: 250px;
+            height: 75px;
+            padding: 5px 10px;
+            font-size: 16px;
+        }
+
+        .sidebar .newMess_and_Search input[type=text] {
+            grid-column: 1/1;
+            grid-row: 2/3;
+            width: 250px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+    .sidebar .message_list {
+        grid-column: 1/1;
+        grid-row: 2/3;
+        border: 5px solid green;
     }
 
 .main {
@@ -38,15 +67,21 @@ html, body {
     grid-column: 2/3;
     grid-row: 3/4;
     background: #32527b;
+    display: grid;  /* THIS IS THE PLACE WHERE I LEFT OFF */
 }
+
     .messagebar input[type=text] {
-        width: 750px;
-        padding: 5px;
-        margin-top: 10px;
-        margin-left: 10px;
         font-size: 16px;
         border-radius: 90px; /*rounds corners*/
         outline-width: 0; /*removes highlight of input field*/
+    }
+
+    .messagebar input[type=submit] {
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box; /*necessary for changing size of the box */
+        justify-self: start;
+        margin-top: 20px;
     }
 
 nav {

@@ -24,15 +24,23 @@ session_start();
                 </div>
             </nav>
             <div class="sidebar">
-                <input type="text" name="message_search" placeholder="Search Message...">
+                <div class="newMess_and_Search">
+                    <input type="submit" value="New Message" name="new_message">
+                    <input type="text" name="message_search" placeholder="Search Message...">
+                </div>
+                <div class="message_list">
+                </div>
             </div>
 
             <div class="main">  
-                <h1>Hello, <?php echo $_SESSION['login_username']; ?></h1>
+                 
             </div> 
 
             <div class="messagebar">
-                <input type="text" name="message" placeholder="Type Your Message...">
+                <form id="message_bar" method="POST">
+                    <input type="text" name="message" placeholder="Type Your Message...">
+                    <input type="submit" name="send_button" value="Send">
+                </form>
             </div>
         </div>
     
