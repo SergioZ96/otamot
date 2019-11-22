@@ -4,12 +4,12 @@ body {
 
 .container {
     margin: auto;
-    width: 500px;
+    width: 500px; /* width size of container is set to 500px */
 }
 
 .container input {
-    margin: auto;
-    width: 100%;
+    margin: auto; /* horizontally centers the element within its container */
+    width: 100%; /* input fields will take 100% width of its container (500px) */
 }
 
 .regButton {
