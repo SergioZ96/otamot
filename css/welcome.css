@@ -67,7 +67,7 @@ html, body {
     grid-column: 2/3;
     grid-row: 3/4;
     background: #32527b;
-    display: grid;  /* THIS IS THE PLACE WHERE I LEFT OFF */
+    display: grid;  
 }
 
     .messagebar input[type=text] {
@@ -121,3 +121,12 @@ a:hover {
     color: black;
 }
 
+.new_message_container {
+    margin: auto;
+    width: 300px;
+}
+
+.new_message_container input {
+    margin: auto;
+    width: 100%;
+}
