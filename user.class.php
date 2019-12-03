@@ -104,6 +104,34 @@ class User
 		return false;
 	}
 
+	public function addGroup($name = NULL){
+		
+		$date = date("Y-m-d H:i:s");
+
+		if($name == NULL){
+			$this->stmt = $this->db->prep("INSERT INTO Group (name, create_date) VALUES (:name, :createdate)");
+			$this->stmt->bindParam(':name', NULL);
+			$this->stmt->bindParam(':createdate', $date);
+			$this->stmt->execute();
+		}
+		
+		// Retrieves the last inserted id immediately from the Group table
+		// Note: when using LAST_INSERT_ID(), it only gets the last inserted id from the whole database connection
+		//       and not just from a specific table
+		$this->stmt = $this->db->prep("SELECT LAST_INSERT_ID()");
+		$this->stmt->execute();
+		$lastId = $this->stmt->fetch(PDO::FETCH_ASSOC);
+		return $lastId;
+		
+	}
+
+	public function addUserGroup(){
+
+			
+
+	}
+
+
 }
 	
 ?>
