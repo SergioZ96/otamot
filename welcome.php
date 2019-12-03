@@ -10,8 +10,31 @@ error_reporting(E_ALL);
 require_once('mypdo.class.php');
 require_once('user.class.php');
 
-//New Message button is supposed to make the pop up form show in the center of the webpage
-//  - however it will always be hidden
+date_default_timezone_set('America/New_York');
+
+// Need functions to handle inserting users to Group and User_Group tables upon starting a New Message
+
+function groupChat(User $user){
+    /*
+        Args: User object, pdo
+        Returns: no return value
+        Function: inserts new records into Group and User_Group tables
+    */
+
+    $group_name = NULL;
+
+    if(is_null($group_name)){
+        $group_ID = $user->addGroup($group_name);
+        $user_ID = $user->getId($_SESSION['login_username']);
+        $recipient_ID = $user->getId($_POST['recipient']);
+
+        $id_array = array($group_ID, $user_ID, $recipient_ID);
+        var_dump($id_array);
+        $user->addUserGroup($id_array);
+    }
+}
+
+
 
 ?>
 
@@ -96,3 +119,12 @@ require_once('user.class.php');
     </body>
 
 </html>
+
+<?php
+    
+    $user = new User();
+
+    if(isset($_POST['new_message_submit'])){
+        groupChat($user);
+    }
+?>
