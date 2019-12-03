@@ -24,7 +24,7 @@ class User
 			$lastname = $inputArray[3];
 			$email = $inputArray[4];
 
-			$this->stmt = $this->db->prep("INSERT INTO Users (username, password, first, last, email) VALUES (:username, :password, :first, :last, :email)");
+			$this->stmt = $this->db->prep("INSERT INTO `Users` (username, password, first, last, email) VALUES (:username, :password, :first, :last, :email)");
 			$this->stmt->bindParam(':username', $username);
 			$this->stmt->bindParam(':password', $password);
 			$this->stmt->bindParam(':first', $firstname);
@@ -47,7 +47,7 @@ class User
 		$login_username = $inputArray[0];
 		$login_password = $inputArray[1];
 
-		$this->stmt = $this->db->prep("SELECT password, username FROM Users WHERE username=:username1 OR email=:username2");
+		$this->stmt = $this->db->prep("SELECT `password`, `username` FROM `Users` WHERE username=:username1 OR email=:username2");
 		
 		$this->stmt->bindParam(':username1', $login_username);
 		$this->stmt->bindParam(':username2', $login_username);
@@ -69,7 +69,7 @@ class User
 
 		*/
 
-		$this->stmt = $this->db->prep("SELECT username FROM Users WHERE username=:username");
+		$this->stmt = $this->db->prep("SELECT `username` FROM `Users` WHERE username=:username");
 		$this->stmt->bindParam(':username', $username);
 		//NOTE:
 		// execute returns true if prepared statement executes. Doesn't matter if values are not found in the database
@@ -91,7 +91,7 @@ class User
 			Returns: bool, true if the user exists. Otherwise false.
 		*/
 
-		$this->stmt = $this->db->prep("SELECT email FROM Users WHERE email=:email");
+		$this->stmt = $this->db->prep("SELECT `email` FROM `Users` WHERE email=:email");
 		$this->stmt->bindParam(':email', $email);
 		$this->stmt->execute();
 		$email_check = $this->stmt->fetch(PDO::FETCH_ASSOC);
@@ -104,30 +104,67 @@ class User
 		return false;
 	}
 
-	public function addGroup($name = NULL){
+	public function getId($username){
+
+
+		$this->stmt = $this->db->prep("SELECT `id` FROM `Users` WHERE username=:username1 or email=:username2");
+		$this->stmt->bindParam(':username1',$username);
+		$this->stmt->bindParam(':username2',$username);
+		$this->stmt->execute();
+		$id_result = $this->stmt->fetch(PDO::FETCH_ASSOC);
+		return $id_result["id"];
+
+	}
+
+	public function addGroup($name){
 		
 		$date = date("Y-m-d H:i:s");
 
-		if($name == NULL){
-			$this->stmt = $this->db->prep("INSERT INTO Group (name, create_date) VALUES (:name, :createdate)");
-			$this->stmt->bindParam(':name', NULL);
-			$this->stmt->bindParam(':createdate', $date);
-			$this->stmt->execute();
-		}
+		$this->stmt = $this->db->prep("INSERT INTO `Group` (name, create_date) VALUES (:name, :createdate)");
+		$this->stmt->bindParam(':name', $name);
+		$this->stmt->bindParam(':createdate', $date);
+		$this->stmt->execute();
 		
 		// Retrieves the last inserted id immediately from the Group table
 		// Note: when using LAST_INSERT_ID(), it only gets the last inserted id from the whole database connection
 		//       and not just from a specific table
-		$this->stmt = $this->db->prep("SELECT LAST_INSERT_ID()");
+		$this->stmt = $this->db->prep("SELECT MAX( id ) FROM `Group`");
 		$this->stmt->execute();
 		$lastId = $this->stmt->fetch(PDO::FETCH_ASSOC);
-		return $lastId;
+		var_dump($lastId);
+		return $lastId["MAX( id )"];
 		
 	}
 
-	public function addUserGroup(){
+	public function addUserGroup($id_array){
 
-			
+		$group_ID = $id_array[0];
+		$user_ID = $id_array[1];
+		$recipient_ID = $id_array[2];
+
+		/*
+		$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, 1);
+
+		$this->stmt = $this->db->prep("INSERT INTO `User_Group` (user_id, group_id) VALUES (:userID_1, :groupID_1);
+										INSERT INTO `User_Group` (user_id, group_id) VALUES (:userID_2, :groupID_2");
+
+		$this->stmt->execute(array(
+			':userID_1' => $user_ID,
+			':groupID_1' => $group_ID,
+			':userID_2' => $recipient_ID,
+			':groupID_2' => $group_ID
+		));
+		*/
+
+		$this->stmt = $this->db->prep("INSERT INTO `User_Group` (user_id, group_id) VALUES (:userID_1, :groupID_1)");
+		$this->stmt->bindParam(':userID_1', $user_ID);
+		$this->stmt->bindParam(':groupID_1', $group_ID);
+		$this->stmt->execute();
+
+		$this->stmt = $this->db->prep("INSERT INTO `User_Group` (user_id, group_id) VALUES (:userID_2, :groupID_2)");
+		$this->stmt->bindParam(':userID_2', $recipient_ID);
+		$this->stmt->bindParam(':groupID_2', $group_ID);
+		$this->stmt->execute();
 
 	}
 
