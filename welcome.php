@@ -13,11 +13,6 @@ require_once('user.class.php');
 //New Message button is supposed to make the pop up form show in the center of the webpage
 //  - however it will always be hidden
 
-function initChat(User $user){
-    
-}
-
-
 ?>
 
 <!DOCTYPE html>
@@ -27,13 +22,13 @@ function initChat(User $user){
         <link rel="stylesheet" href="css/welcome.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-        <script>
+        <script> /* jQeury for checking if recipient exists to initiaite a chat */
             $(document).ready(function() {
-                $('#feedback').load('user_extended.php').show();
+                $('#feedback').load('pdo_extended.php').show();
 
                 $('#recipient_input').keyup(function() {
                     var recipient_input = $("#recipient_input").val();
-                    $.post('user_extended.php', { recipient: recipient_input },
+                    $.post('pdo_extended.php', { recipient: recipient_input, type: "recipientCheck" },
                     function(data,status){
                         $('#feedback').html(data).show();
                     });
@@ -42,7 +37,7 @@ function initChat(User $user){
            
         </script>
 
-        <script>
+        <script> 
 		function formShow(a)
 		{
 			if(a==1){
