@@ -104,8 +104,7 @@ class User
 		return false;
 	}
 
-	public function getId($username){
-
+	public function getUserId($username){
 
 		$this->stmt = $this->db->prep("SELECT `id` FROM `Users` WHERE username=:username1 or email=:username2");
 		$this->stmt->bindParam(':username1',$username);
@@ -131,7 +130,6 @@ class User
 		$this->stmt = $this->db->prep("SELECT MAX( id ) FROM `Group`");
 		$this->stmt->execute();
 		$lastId = $this->stmt->fetch(PDO::FETCH_ASSOC);
-		var_dump($lastId);
 		return $lastId["MAX( id )"];
 		
 	}
@@ -146,7 +144,7 @@ class User
 		$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, 1);
 
 		$this->stmt = $this->db->prep("INSERT INTO `User_Group` (user_id, group_id) VALUES (:userID_1, :groupID_1);
-										INSERT INTO `User_Group` (user_id, group_id) VALUES (:userID_2, :groupID_2");
+										INSERT INTO `User_Group` (user_id, group_id) VALUES (:userID_2, :groupID_2)");
 
 		$this->stmt->execute(array(
 			':userID_1' => $user_ID,
@@ -166,6 +164,42 @@ class User
 		$this->stmt->bindParam(':groupID_2', $group_ID);
 		$this->stmt->execute();
 
+	}
+
+	public function addMessage($creator_id, $message_body){
+
+		$date = date("Y-m-d H:i:s");
+		$this->stmt = $this->db->prep("INSERT INTO `Message` (creator_id, message_body, create_date, parent_message_id) VALUES (:creator_id, :message_body, :create_date, :parent_message_id)");
+		$this->stmt->execute(array(
+			':creator_id' => $creator_id,
+			':message_body' => $message_body,
+			':create_date' => $date,
+			':parent_message_id' => NULL
+		));
+
+		$this->stmt = $this->db->prep("SELECT MAX( id ) FROM `Message`");
+		$this->stmt->execute();
+		$lastId = $this->stmt->fetch(PDO::FETCH_ASSOC);
+		return $lastId["MAX( id )"];
+
+		// how to update parent message id
+	}
+
+	public function addMessageRecipient($id_array){
+		//recipient_id, recipient_group_id, message_id, is_read
+		$group_ID = $id_array[0];
+		$user_creator_ID = $id_array[1];
+		$recipient_ID = $id_array[2];
+		$message_ID = $id_array[3];
+
+		$this->stmt = $this->db->prep("INSERT INTO `Message_Recipient` (recipient_id, recipient_group_id, message_id) VALUES (:recipient_id, :recipient_group_id, :message_id)");
+		$execution_result = $this->stmt->execute(array(
+			':recipient_id' => $recipient_ID,
+			':recipient_group_id' => $group_ID,
+			':message_id' => $message_ID
+		));
+
+		return $execution_result;
 	}
 
 
