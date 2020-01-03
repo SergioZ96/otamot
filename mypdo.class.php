@@ -8,7 +8,6 @@ class MyPDO{
 		
 		// automatically called on all newly created objects
 		public function __construct(){
-			$dsn = 'mysql:host=' . HOST . ';dbname=' . DATABASE . ';charset=utf8';
 			
 			$options = array(
 						PDO::ATTR_PERSISTENT => true,
@@ -16,7 +15,7 @@ class MyPDO{
 						PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 						PDO::ATTR_EMULATE_PREPARES => FALSE
 			);
-			$this->pdo = new PDO($dsn, USERNAME, PASSWORD, $options);
+			$this->pdo = new PDO(DSN, USERNAME, PASSWORD, $options);
 			
 		}
 		
