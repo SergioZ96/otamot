@@ -84,7 +84,7 @@ function loginUser(User $user){
 			$_SESSION['login_username'] = $login_result;
 
 			// will jump the welcome page
-			header("location: welcome.php");
+			header("location: /otamot/welcome");
 		}
 		else {
 			echo "Invalid username/password";
@@ -99,7 +99,7 @@ function loginUser(User $user){
 <head>
 	<title>Otamot</title>
 
-	<link rel="stylesheet" href="css/login.css">
+	<link rel="stylesheet" type="text/css" href="/otamot/css/login.css">
 
 	<script>
 		function formShow(a)
