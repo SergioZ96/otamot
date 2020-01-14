@@ -1,4 +1,4 @@
-<?php
+<?php 
 // ini_set() function allows a script to temporarily override a setting in PHP's configuration file.
 // we are turning the display_errors setting to on, which is represented by the number 1. The default value is set to off
 // as well as display_startup_errors, which is used to find errors during PHP's startup sequence
@@ -9,9 +9,17 @@ error_reporting(E_ALL);
 require_once('mypdo.class.php');
 require_once('user.class.php');
 
+
 // starting a session necessary for each individual user trying to use the website
 session_start();
 
+
+# if login appears in the url, then continue
+
+if(strpos($_SERVER['REQUEST_URI'],'login.php') !== false) {
+	header('Location: https://www.otamotweb.com');
+}
+# else redirect to login
 
 function registerUser(User $user){
 	/*

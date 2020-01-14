@@ -1,11 +1,20 @@
 <?php
 //include 'login.php';
 // session_start() is needed to access the $_SESSION array to obtain its values
+#require_once('authenticate.php');
+
 session_start();
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 
+if(strpos($_SERVER['REQUEST_URI'],'welcome') !== false && !isset($_SESSION['login_username'])) {
+	header('Location: https://www.otamotweb.com');
+}
+
+if(strpos($_SERVER['REQUEST_URI'],'welcome.php') !== false && isset($_SESSION['login_username'])) {
+	header('Location: welcome');
+}
 
 require_once('mypdo.class.php');
 require_once('user.class.php');
