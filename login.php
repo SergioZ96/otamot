@@ -14,12 +14,10 @@ require_once('user.class.php');
 session_start();
 
 
-# if login appears in the url, then continue
-
+# if user types otamotweb.com/otamot/login.php , then will redirect to just the main website. Disallows url with .php extension
 if(strpos($_SERVER['REQUEST_URI'],'login.php') !== false) {
 	header('Location: https://www.otamotweb.com');
 }
-# else redirect to login
 
 function registerUser(User $user){
 	/*
@@ -43,6 +41,9 @@ function registerUser(User $user){
 		echo '<br>User already exists with email<br>';
 	}
 
+	//makes sure that POST array contains all correct key fields
+	//array with length > 0 returns TRUE
+	//if the array has 0 elements, it is considered to be false. the negation unary operator then turns the empty array to be true
 	elseif(!array_diff($regVariables, array_keys($_POST))){
 		
 		//validate email 
@@ -52,10 +53,7 @@ function registerUser(User $user){
 		}
 		
 		//check if passwords match
-		if($_POST['password'] == $_POST['conpassword']){
-			
-		}
-		else {
+		if($_POST['password'] != $_POST['conpassword']){
 			echo 'Passwords do not match';
 		}
 		
@@ -80,10 +78,10 @@ function loginUser(User $user){
 
 	$logVariables = array('login_username','login_password');
 	$hash = "";
-	if(!array_diff($logVariables, array_keys($_POST))){
 
-		// hashed login password to match password stored in database
-		//$hash = crypt($_POST["login_password"],"$1$");
+	//if there is a login_username and login_password field then it will return an empty array being false. 
+	//However, negation unary operator turns it to true
+	if(!array_diff($logVariables, array_keys($_POST))){
 
 		$inputArray = array($_POST["login_username"], $_POST["login_password"]);
 		$login_result = $user->checkUser($inputArray);
@@ -91,7 +89,7 @@ function loginUser(User $user){
 			//username is added to the $_SESSION array
 			$_SESSION['login_username'] = $login_result;
 
-			// will jump the welcome page
+			// will jump to the welcome page
 			header("location: /otamot/welcome");
 		}
 		else {

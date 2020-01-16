@@ -1,17 +1,17 @@
 <?php
-//include 'login.php';
-// session_start() is needed to access the $_SESSION array to obtain its values
-#require_once('authenticate.php');
 
+// session_start() is needed to access the $_SESSION array to obtain its values
 session_start();
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 
+# if user types otamotweb.com/otamot/welcome and user is not logged in (starting a session), then redirects to main website 
 if(strpos($_SERVER['REQUEST_URI'],'welcome') !== false && !isset($_SESSION['login_username'])) {
 	header('Location: https://www.otamotweb.com');
 }
 
+# if user types 'url'.php but also the user is currently logged in and already in the welcome page, it will just return welcome without .php extension
 if(strpos($_SERVER['REQUEST_URI'],'welcome.php') !== false && isset($_SESSION['login_username'])) {
 	header('Location: welcome');
 }
@@ -64,19 +64,19 @@ date_default_timezone_set('America/New_York');
         </script>
 
         <script> 
-		function formShow(a)
-		{
-			if(a==1){
-				document.getElementById("new_message_container").style.display="block";
-				
-			} else {
-				document.getElementById("new_message_container").style.display="none";
-				
-			}
-		}
+            function formShow(a)
+            {
+                if(a==1){
+                    document.getElementById("new_message_container").style.display="block";
+                    
+                } else {
+                    document.getElementById("new_message_container").style.display="none";
+                    
+                }
+            }
         
         
-	</script>
+	    </script>
     </head>
 
     <body>
