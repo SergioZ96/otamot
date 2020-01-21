@@ -64,13 +64,15 @@ function groupChat(User $user){
         echo json_encode($id_array);
     }
 }
+// Modified sendMessage to work with jQuery
+function sendMessage(User $user){
 
-function sendMessage(User $user, $id_array){
+    $id_array = json_decode($_POST['id_array']);
+    $message_body = $_POST['message'];
 
     $group_ID = $id_array[0];
     $user_creator_ID = $id_array[1];
     $recipient_ID = $id_array[2];
-    $message_body = $_POST['message'];
 
     $message_ID = $user->addMessage($user_creator_ID, $message_body);
 
@@ -79,11 +81,11 @@ function sendMessage(User $user, $id_array){
 
     if($result)
     {
-        var_dump($message_body);
+        echo json_encode($message_body);
     }
 }
 
-
+// Added a sendMessage condition
 if(isset($_POST["type"])){
     $type = $_POST["type"];
     switch($type){
@@ -93,19 +95,10 @@ if(isset($_POST["type"])){
         case "groupChat":
             groupChat($user);
             break;
+        case "sendMessage":
+            sendMessage($user);
+            break;
     }
 }
-/*
-switch($type){
-    case "recipientCheck":
-        recipCheck($mypdo);
-        break;
-    case "groupChat":
-        groupChat($user);
-        break;
-}
-*/
-
-
 
 ?>

@@ -43,6 +43,8 @@ date_default_timezone_set('America/New_York');
                     $.post('welcome_helper.php', { recipient: recipient_input, type: "recipientCheck" },
                     function(data,status){
                         $('#feedback').html(data).show();
+
+                        // Responsible for disabling/enabling chat button
                         if(!$('#feedback:contains("Recipient Exists")').length > 0){
                             document.getElementById("chat_button").disabled = true;
                         }
@@ -63,6 +65,8 @@ date_default_timezone_set('America/New_York');
                     function(data,status){
                         var id_array = data;
                         $("#hidden_array").val(id_array);
+
+                        // Responsible for resetting new message container
                         if($('#feedback:contains("Recipient Exists")').length > 0){
                             document.getElementById("recipient_input").value = "";
                             document.getElementById("new_message_container").style.display = "none";
@@ -71,14 +75,20 @@ date_default_timezone_set('America/New_York');
                     });
                 });
             });
-/*
+
+            // jQuery for replacing submission form when sending a message
+
             $(document).ready(function() {
-                $('#chat_button').click(function() {
-                    var recipient = $("#recipient_input").val();
-                    $.post('welcome_helper.php', {})
-                })
-            })
-*/
+                $('#send_button').click(function() {
+                    var message = $("#message_input").val();
+                    var id_array = $("#hidden_array").val();
+                    $.post('welcome_helper.php', {message: message, id_array: id_array, type: "sendMessage"},
+                    function(data){
+                        $("#message_in_main").html(data).show();
+                    });
+                });
+            });
+
            
         </script>
 
@@ -94,6 +104,8 @@ date_default_timezone_set('America/New_York');
                 }
 
             }
+
+            
         
         
 	    </script>
@@ -132,14 +144,15 @@ date_default_timezone_set('America/New_York');
                             will contain message body and date message was sent/created
                       - Before starting to add code to main message area we have to set the layout for how we want to organize the messages in welcome.css
                 -->
+
+                <div id="message_in_main"></div>
+
             </div> 
 
-            <div class="messagebar">
-                <form id="message_bar" method="POST">
-                    <input type="text" name="message" placeholder="Type Your Message...">
-                    <input type="hidden" id="hidden_array" name="hidden_id_array">
-                    <input type="submit" name="send_button" value="Send">
-                </form>
+            <div class="messagebar" id="messagebar_container">
+                <input type="text" id="message_input" name="message" placeholder="Type Your Message...">
+                <input type="hidden" id="hidden_array" name="hidden_id_array">
+                <button name="send_message_submit" id="send_button">Send</button>
             </div>
         </div>
     
@@ -149,16 +162,17 @@ date_default_timezone_set('America/New_York');
 
 <?php
     
-    $user = new User();
+    //$user = new User();
     //$id_array = array();
     /* If the send button is pressed, we decode the JSON array and pass it to sendMessage function 
        which adds new fields to the Message and Message_Recipient tables
     */
+    /*
     if(isset($_POST['send_button'])){
         echo $_POST['hidden_id_array'];
         $id_array = json_decode($_POST['hidden_id_array']);
         sendMessage($user, $id_array);
         
     }
-    
+    */
 ?>
