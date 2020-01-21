@@ -43,6 +43,12 @@ date_default_timezone_set('America/New_York');
                     $.post('welcome_helper.php', { recipient: recipient_input, type: "recipientCheck" },
                     function(data,status){
                         $('#feedback').html(data).show();
+                        if(!$('#feedback:contains("Recipient Exists")').length > 0){
+                            document.getElementById("chat_button").disabled = true;
+                        }
+                        else{
+                            document.getElementById("chat_button").disabled = false;
+                        }
                     });
                 });
             });
@@ -57,10 +63,22 @@ date_default_timezone_set('America/New_York');
                     function(data,status){
                         var id_array = data;
                         $("#hidden_array").val(id_array);
+                        if($('#feedback:contains("Recipient Exists")').length > 0){
+                            document.getElementById("recipient_input").value = "";
+                            document.getElementById("new_message_container").style.display = "none";
+                            document.getElementById("feedback").innerHTML = "";
+                        }
                     });
                 });
             });
-
+/*
+            $(document).ready(function() {
+                $('#chat_button').click(function() {
+                    var recipient = $("#recipient_input").val();
+                    $.post('welcome_helper.php', {})
+                })
+            })
+*/
            
         </script>
 
@@ -74,14 +92,7 @@ date_default_timezone_set('America/New_York');
                 else if(a==2) {
                     document.getElementById("new_message_container").style.display="none";
                 }
-                else if(a==3) {
-                    if($('#feedback:contains("Recipient Exists")').length > 0){
-                            document.getElementById("recipient_input").value = "";
-                            document.getElementById("new_message_container").style.display="none";
-                            document.getElementById("feedback").innerHTML = "";
-                    } 
 
-                }
             }
         
         
@@ -92,7 +103,7 @@ date_default_timezone_set('America/New_York');
         <div class="new_message_container" id="new_message_container" style="display:none" name="new_message_container">
             <input type="text" id="recipient_input" name="recipient" placeholder="Type Recipient's Username or Email...">
             <div id="feedback"></div>
-            <button name="new_message_submit" id="chat_button" onclick="formShow(3);">Chat</button>
+            <button name="new_message_submit" id="chat_button">Chat</button>
             <button type="button" name="cancel_new_message" onclick="formShow(2);">Cancel</button> 
         </div>
         
