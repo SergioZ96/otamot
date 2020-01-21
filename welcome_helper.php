@@ -31,12 +31,12 @@ function recipCheck($mypdo){
         
         // if not empty
         if(!empty($recipient)){ 
-            if(strcmp($recipient_check["username"],$recipient) == 0){ // if the strings are equal, which would be equal to 0
-                echo "Recipient Exists";
-            } 
-            else if(strcmp($recipient_check["username"],$_SESSION["login_username"]) == 0){
+            if(strcmp($recipient_check["username"],$_SESSION["login_username"]) == 0){
                 echo "Cannot send message to self";
             }
+            elseif(strcmp($recipient_check["username"],$recipient) == 0){ // if the strings are equal, which would be equal to 0
+                echo "Recipient Exists";
+            } 
             else{
                 echo "Recipient Does Not Exist";
             }
@@ -81,10 +81,6 @@ function sendMessage(User $user, $id_array){
     {
         var_dump($message_body);
     }
-}
-
-function loadChat($username){
-    
 }
 
 

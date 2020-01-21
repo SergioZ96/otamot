@@ -48,7 +48,8 @@ date_default_timezone_set('America/New_York');
             });
 
 
-            /* jQuery for taking the recipients name and adding it to Group and User_Group tables */
+            /* jQuery for taking the recipients name and adding it to Group and User_Group tables
+                - also used to pass an array in JSON containing group id, user id, recipient id in that order as a hidden field to the message form */
             $(document).ready(function() {
                 $('#chat_button').click(function() {
                     var recipient = $("#recipient_input").val();
@@ -69,9 +70,17 @@ date_default_timezone_set('America/New_York');
                 if(a==1){
                     document.getElementById("new_message_container").style.display="block";
                     
-                } else {
+                } 
+                else if(a==2) {
                     document.getElementById("new_message_container").style.display="none";
-                    
+                }
+                else if(a==3) {
+                    if($('#feedback:contains("Recipient Exists")').length > 0){
+                            document.getElementById("recipient_input").value = "";
+                            document.getElementById("new_message_container").style.display="none";
+                            document.getElementById("feedback").innerHTML = "";
+                    } 
+
                 }
             }
         
@@ -83,7 +92,7 @@ date_default_timezone_set('America/New_York');
         <div class="new_message_container" id="new_message_container" style="display:none" name="new_message_container">
             <input type="text" id="recipient_input" name="recipient" placeholder="Type Recipient's Username or Email...">
             <div id="feedback"></div>
-            <button name="new_message_submit" id="chat_button">Chat</button>
+            <button name="new_message_submit" id="chat_button" onclick="formShow(3);">Chat</button>
             <button type="button" name="cancel_new_message" onclick="formShow(2);">Cancel</button> 
         </div>
         
@@ -108,7 +117,10 @@ date_default_timezone_set('America/New_York');
             </div>
 
             <div class="main">  
-                 
+                 <!-- - Div containers for holding the messages between a group chat or two individuals
+                            will contain message body and date message was sent/created
+                      - Before starting to add code to main message area we have to set the layout for how we want to organize the messages in welcome.css
+                -->
             </div> 
 
             <div class="messagebar">
@@ -128,13 +140,14 @@ date_default_timezone_set('America/New_York');
     
     $user = new User();
     //$id_array = array();
+    /* If the send button is pressed, we decode the JSON array and pass it to sendMessage function 
+       which adds new fields to the Message and Message_Recipient tables
+    */
     if(isset($_POST['send_button'])){
+        echo $_POST['hidden_id_array'];
         $id_array = json_decode($_POST['hidden_id_array']);
         sendMessage($user, $id_array);
         
     }
-    
-    
-
     
 ?>

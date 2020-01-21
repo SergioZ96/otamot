@@ -31,38 +31,54 @@ function registerUser(User $user){
 	$regVariables = array('firstname','lastname','username','email','password','conpassword');
 	$hash = "";
 
-	// check if username is available by checking in database
-	if(($user->username_available($_POST["username"])) == false){
-		echo '<br>Username is not available<br>';
-	}
-
-	// check if user already exists by running email through database
-	elseif(($user->userExists($_POST["email"])) == true){
-		echo '<br>User already exists with email<br>';
-	}
 
 	//makes sure that POST array contains all correct key fields
 	//array with length > 0 returns TRUE
 	//if the array has 0 elements, it is considered to be false. the negation unary operator then turns the empty array to be true
-	elseif(!array_diff($regVariables, array_keys($_POST))){
-		
-		//validate email 
+	if(!array_diff($regVariables, array_keys($_POST))){
+
+		// Remove beginning and trailing whitespaces
+		$_POST["first"] = trim($_POST["first"]);
+		$_POST["last"] = trim($_POST["last"]);
+		$_POST["username"] = trim($_POST["username"]);
+		$_POST["email"] = trim($_POST["email"]);
 		$email = $_POST["email"];
-		if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+
+
+		// Disallow white spaces in usernames
+		if(preg_match('/\s/',$_POST["username"])){
+			echo '<br>Username cannot contain white spaces<br>';
+		}
+
+		// check if username is available by checking in database
+		elseif(($user->username_available($_POST["username"])) == false){
+			echo '<br>Username is not available<br>';
+		}
+
+		// check if user already exists by running email through database
+		elseif(($user->userExists($_POST["email"])) == true){
+			echo '<br>User already exists with email<br>';
+		}
+			
+		//validate email 
+		elseif(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 			echo '<br>Invalid email format<br>';
 		}
 		
 		//check if passwords match
-		if($_POST['password'] != $_POST['conpassword']){
+		elseif($_POST['password'] != $_POST['conpassword']){
 			echo 'Passwords do not match';
 		}
 		
-		// (hash+salt)ing passwords
-		$hash = password_hash($_POST["password"],PASSWORD_DEFAULT);
-		
-		$inputArray = array($_POST['username'], $hash, $_POST['firstname'], $_POST['lastname'], $_POST['email']);
-		// next step is to create a new user in database
-		$user->addUser($inputArray);
+		// (hash+salt)ing passwords and adding new user credentials to the database
+		else {
+			$hash = password_hash($_POST["password"],PASSWORD_DEFAULT);
+			
+			$inputArray = array($_POST['username'], $hash, $_POST['firstname'], $_POST['lastname'], $_POST['email']);
+                	// next step is to create a new user in database
+                	$user->addUser($inputArray);
+		}
+
 	}
 
 

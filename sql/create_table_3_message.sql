@@ -2,8 +2,8 @@ CREATE TABLE IF NOT EXISTS `Message`(
     `id` int auto_increment not null,
     `creator_id` int not null,
     `message_body` varchar(4000),
-    `create_data` timestamp,
-    `parent_message_id` int not null,
+    `create_date` timestamp,
+    `parent_message_id` int,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`creator_id`) REFERENCES `Users` (`id`),
     FOREIGN KEY (`parent_message_id`) REFERENCES `Message` (`id`)
