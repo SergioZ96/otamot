@@ -70,7 +70,8 @@ date_default_timezone_set('America/New_York');
                         if($('#feedback:contains("Recipient Exists")').length > 0){
                             document.getElementById("recipient_input").value = "";
                             document.getElementById("new_message_container").style.display = "none";
-                            document.getElementById("feedback").innerHTML = "";
+			    document.getElementById("feedback").innerHTML = "";
+			    document.getElementById("messagebar_container").style.display = "block";
                         }
                     });
                 });
@@ -149,7 +150,7 @@ date_default_timezone_set('America/New_York');
 
             </div> 
 
-            <div class="messagebar" id="messagebar_container">
+            <div class="messagebar" id="messagebar_container" style="display:none">
                 <input type="text" id="message_input" name="message" placeholder="Type Your Message...">
                 <input type="hidden" id="hidden_array" name="hidden_id_array">
                 <button name="send_message_submit" id="send_button">Send</button>
