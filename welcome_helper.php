@@ -53,16 +53,23 @@ function groupChat(User $user){
     */
 
     $group_name = NULL;
-
-    if(is_null($group_name)){
+    $user_ID = $user->getUserId($_SESSION['login_username']);
+    $recipient_ID = $user->getUserId($_POST['data']);
+    $chat_status = $user->chatExists($user_ID, $recipient_ID);
+    
+    if($chat_status){
+        $group_ID = $chat_status;
+	$id_array = array($group_ID, $user_ID, $recipient_ID);
+    }
+    else{
         $group_ID = $user->addGroup($group_name);
-        $user_ID = $user->getUserId($_SESSION['login_username']);
-        $recipient_ID = $user->getUserId($_POST['data']);
-
         $id_array = array($group_ID, $user_ID, $recipient_ID);
         $user->addUserGroup($id_array);
-        echo json_encode($id_array);
     }
+
+    
+    echo json_encode($id_array);
+
 }
 // Modified sendMessage to work with jQuery
 function sendMessage(User $user){
@@ -84,6 +91,13 @@ function sendMessage(User $user){
         echo json_encode($message_body);
     }
 }
+// Function needed to load chats between two users. Will also be working with jQuery
+function loadChat(User $user){
+	
+    /* */
+    
+
+}
 
 // Added a sendMessage condition
 if(isset($_POST["type"])){
@@ -97,7 +111,10 @@ if(isset($_POST["type"])){
             break;
         case "sendMessage":
             sendMessage($user);
-            break;
+	    break;
+	case "loadChat":
+	    loadChat($user);
+	    break;
     }
 }
 
