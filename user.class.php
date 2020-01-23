@@ -202,6 +202,28 @@ class User
 		return $execution_result;
 	}
 
+	public function chatExists($user_id_one, $user_id_two){
+		
+		$this->stmt = $this->db->prep("SELECT `group_id` FROM `User_Group` WHERE user_id=:user_id_one and `group_id` in (SELECT `group_id` FROM `User_Group` WHERE user_id=:user_id_two)");
+		$this->stmt->bindParam(':user_id_one', $user_id_one);
+		$this->stmt->bindParam(':user_id_two', $user_id_two);
+		$this->stmt->execute();
+		$groupId = $this->stmt->fetch(PDO::FETCH_ASSOC);
+
+		if(empty($groupId["group_id"])){
+			return false;
+		}
+		return $groupId["group_id"];
+	}
+
+	public function getMessages($group_id){
+		// Query needs to get all message_id's that have the same recipient_group_id's from message_recipient table
+		$this->stmt = $this->db->prep("SELECT `message_body` FROM `Message` WHERE id IN (SELECT `message_id` FROM `Message_Recipient` WHERE recipient_group_id=:group_id)");
+		$this->stmt->bindParam(':group_id', $group_id);
+		$this->stmt->execute();
+		$messages = $this->stmt->fetch(PDO::FETCH_ASSOC);
+	}
+
 
 }
 	
