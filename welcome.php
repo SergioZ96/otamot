@@ -163,17 +163,4 @@ date_default_timezone_set('America/New_York');
 
 <?php
     
-    //$user = new User();
-    //$id_array = array();
-    /* If the send button is pressed, we decode the JSON array and pass it to sendMessage function 
-       which adds new fields to the Message and Message_Recipient tables
-    */
-    /*
-    if(isset($_POST['send_button'])){
-        echo $_POST['hidden_id_array'];
-        $id_array = json_decode($_POST['hidden_id_array']);
-        sendMessage($user, $id_array);
-        
-    }
-    */
 ?>
