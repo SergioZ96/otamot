@@ -70,8 +70,8 @@ date_default_timezone_set('America/New_York');
                         if($('#feedback:contains("Recipient Exists")').length > 0){
                             document.getElementById("recipient_input").value = "";
                             document.getElementById("new_message_container").style.display = "none";
-			    document.getElementById("feedback").innerHTML = "";
-			    document.getElementById("messagebar_container").style.display = "block";
+			                document.getElementById("feedback").innerHTML = "";
+			                document.getElementById("messagebar_container").style.display = "block";
                         }
                     });
                 });
@@ -86,6 +86,7 @@ date_default_timezone_set('America/New_York');
                     $.post('welcome_helper.php', {message: message, id_array: id_array, type: "sendMessage"},
                     function(data){
                         $("#message_in_main").html(data).show();
+                        document.getElementById("message_input").value = "";
                     });
                 });
             });
@@ -161,6 +162,3 @@ date_default_timezone_set('America/New_York');
 
 </html>
 
-<?php
-    
-?>

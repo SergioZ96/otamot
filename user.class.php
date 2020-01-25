@@ -140,20 +140,6 @@ class User
 		$user_ID = $id_array[1];
 		$recipient_ID = $id_array[2];
 
-		/*
-		$this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, 1);
-
-		$this->stmt = $this->db->prep("INSERT INTO `User_Group` (user_id, group_id) VALUES (:userID_1, :groupID_1);
-										INSERT INTO `User_Group` (user_id, group_id) VALUES (:userID_2, :groupID_2)");
-
-		$this->stmt->execute(array(
-			':userID_1' => $user_ID,
-			':groupID_1' => $group_ID,
-			':userID_2' => $recipient_ID,
-			':groupID_2' => $group_ID
-		));
-		*/
-
 		$this->stmt = $this->db->prep("INSERT INTO `User_Group` (user_id, group_id) VALUES (:userID_1, :groupID_1)");
 		$this->stmt->bindParam(':userID_1', $user_ID);
 		$this->stmt->bindParam(':groupID_1', $group_ID);
@@ -166,40 +152,45 @@ class User
 
 	}
 
-	public function addMessage($creator_id, $message_body){
+	public function addMessage($creator_id, $recipient_id, $message_body, $group_id, $parent_message_id){
 
 		$date = date("Y-m-d H:i:s");
+		
 		$this->stmt = $this->db->prep("INSERT INTO `Message` (creator_id, message_body, create_date, parent_message_id) VALUES (:creator_id, :message_body, :create_date, :parent_message_id)");
 		$this->stmt->execute(array(
 			':creator_id' => $creator_id,
 			':message_body' => $message_body,
 			':create_date' => $date,
-			':parent_message_id' => NULL
+			':parent_message_id' => $parent_message_id
 		));
-
-		$this->stmt = $this->db->prep("SELECT MAX( id ) FROM `Message`");
+		$this->stmt = $this->db->prep("SELECT LAST_INSERT_ID()");
 		$this->stmt->execute();
-		$lastId = $this->stmt->fetch(PDO::FETCH_ASSOC);
-		return $lastId["MAX( id )"];
-
-		// how to update parent message id
-	}
-
-	public function addMessageRecipient($id_array){
-		//recipient_id, recipient_group_id, message_id, is_read
-		$group_ID = $id_array[0];
-		$user_creator_ID = $id_array[1];
-		$recipient_ID = $id_array[2];
-		$message_ID = $id_array[3];
+		$lastMessage = $this->stmt->fetch(PDO::FETCH_ASSOC);
+		$message_id = $lastMessage["LAST_INSERT_ID()"];
+		//$this->stmt = $this->db->prep("SELECT * FROM `Message`");
+		//$this->stmt->execute();
+		//$message_record = $this->stmt->fetch(PDO::FETCH_ASSOC);
+		//$message_id = $message_record["id"];
 
 		$this->stmt = $this->db->prep("INSERT INTO `Message_Recipient` (recipient_id, recipient_group_id, message_id) VALUES (:recipient_id, :recipient_group_id, :message_id)");
 		$execution_result = $this->stmt->execute(array(
-			':recipient_id' => $recipient_ID,
-			':recipient_group_id' => $group_ID,
-			':message_id' => $message_ID
+			':recipient_id' => $recipient_id,
+			':recipient_group_id' => $group_id,
+			':message_id' => $message_id
 		));
 
 		return $execution_result;
+
+		// how to update parent message id
+	}
+	// Needs to return the last message id of a conversation/chat between two users
+	public function lastMessage($group_id){
+		
+		$this->stmt = $this->db->prep("SELECT MAX( id ) FROM `Message` WHERE `id` IN (SELECT MAX( message_id ) FROM `Message_Recipient` WHERE recipient_group_id=:group_id)");
+		$this->stmt->bindParam(':group_id', $group_id);
+		$this->stmt->execute();
+		$last_message_id = $this->stmt->fetch(PDO::FETCH_ASSOC);
+		return $last_message_id["MAX( id )"];
 	}
 
 	public function chatExists($user_id_one, $user_id_two){

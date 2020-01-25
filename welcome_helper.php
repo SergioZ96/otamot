@@ -56,40 +56,41 @@ function groupChat(User $user){
     $user_ID = $user->getUserId($_SESSION['login_username']);
     $recipient_ID = $user->getUserId($_POST['data']);
     $chat_status = $user->chatExists($user_ID, $recipient_ID);
-    
-    if($chat_status){
-        $group_ID = $chat_status;
-	$id_array = array($group_ID, $user_ID, $recipient_ID);
-    }
-    else{
-        $group_ID = $user->addGroup($group_name);
-        $id_array = array($group_ID, $user_ID, $recipient_ID);
-        $user->addUserGroup($id_array);
-    }
 
-    
-    echo json_encode($id_array);
+   // If a chat exists... 
+    if($chat_status){
+	    $group_ID = $chat_status;
+        $parent_message_id = $user->lastMessage($group_ID);
+	    $id_array = array($group_ID, $user_ID, $recipient_ID, $parent_message_id);
+	    echo json_encode($id_array);
+    }
+    // Otherwise, a new group is created
+    else{
+	    $parent_message_id = NULL;
+        $group_ID = $user->addGroup($group_name);
+        $id_array = array($group_ID, $user_ID, $recipient_ID, $parent_message_id);
+	    $user->addUserGroup($id_array);
+	    echo json_encode($id_array);
+    }
 
 }
 // Modified sendMessage to work with jQuery
 function sendMessage(User $user){
 
     $id_array = json_decode($_POST['id_array']);
+    var_dump($id_array);
     $message_body = $_POST['message'];
-
     $group_ID = $id_array[0];
     $user_creator_ID = $id_array[1];
     $recipient_ID = $id_array[2];
+    $parent_message_ID = $id_array[3];
 
-    $message_ID = $user->addMessage($user_creator_ID, $message_body);
+    $result = $user->addMessage($user_creator_ID, $recipient_ID, $message_body, $group_ID, $parent_message_ID);
 
-    array_push($id_array, $message_ID);
-    $result = $user->addMessageRecipient($id_array);
-
-    if($result)
-    {
-        echo json_encode($message_body);
+    if($result){
+	    echo json_encode($message_body);
     }
+
 }
 // Function needed to load chats between two users. Will also be working with jQuery
 function loadChat(User $user){
