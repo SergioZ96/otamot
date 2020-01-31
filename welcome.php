@@ -31,68 +31,20 @@ date_default_timezone_set('America/New_York');
 <html>
     <head>
         <title>Welcome</title>
-        <link rel="stylesheet" href="css/welcome.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-
-        <script> /* jQeury for checking if recipient exists to initiaite a chat */
-            $(document).ready(function() {
-                $('#feedback').load('welcome_helper.php').show();
-
-                $('#recipient_input').keyup(function() {
-                    var recipient_input = $("#recipient_input").val();
-                    $.post('welcome_helper.php', { recipient: recipient_input, type: "recipientCheck" },
-                    function(data,status){
-                        $('#feedback').html(data).show();
-
-                        // Responsible for disabling/enabling chat button
-                        if(!$('#feedback:contains("Recipient Exists")').length > 0){
-                            document.getElementById("chat_button").disabled = true;
-                        }
-                        else{
-                            document.getElementById("chat_button").disabled = false;
-                        }
-                    });
-                });
-            });
-
-
-            /* jQuery for taking the recipients name and adding it to Group and User_Group tables
-                - also used to pass an array in JSON containing group id, user id, recipient id in that order as a hidden field to the message form */
-            $(document).ready(function() {
-                $('#chat_button').click(function() {
-                    var recipient = $("#recipient_input").val();
-                    $.post('welcome_helper.php', { data : recipient, type: "groupChat" }, 
-                    function(data,status){
-                        var id_array = data;
-                        $("#hidden_array").val(id_array);
-
-                        // Responsible for resetting new message container
-                        if($('#feedback:contains("Recipient Exists")').length > 0){
-                            document.getElementById("recipient_input").value = "";
-                            document.getElementById("new_message_container").style.display = "none";
-			                document.getElementById("feedback").innerHTML = "";
-			                document.getElementById("messagebar_container").style.display = "block";
-                        }
-                    });
-                });
-            });
-
-            // jQuery for replacing submission form when sending a message
-
-            $(document).ready(function() {
-                $('#send_button').click(function() {
-                    var message = $("#message_input").val();
-                    var id_array = $("#hidden_array").val();
-                    $.post('welcome_helper.php', {message: message, id_array: id_array, type: "sendMessage"},
-                    function(data){
-                        $("#message_in_main").html(data).show();
-                        document.getElementById("message_input").value = "";
-                    });
-                });
-            });
-
-           
+        <link rel="stylesheet" href="css/welcome.css" type="text/css" />
+        <style>
+            .thumbnail {
+                height: 15%;
+                width: 100%;
+                background-color: powderblue;
+                border: 5px solid blue;
+            }
+        </style>
+        <script type="text/javascript">
+            var login_username = "<?php echo $_SESSION['login_username']; ?>";
         </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="jquery.js"></script>
 
         <script> 
             function formShow(a)
@@ -106,9 +58,6 @@ date_default_timezone_set('America/New_York');
                 }
 
             }
-
-            
-        
         
 	    </script>
     </head>
@@ -137,7 +86,8 @@ date_default_timezone_set('America/New_York');
                     <button id="new_message_button" type="submit" name="new_message" onclick="formShow(1);">New Message</button>
                     <input type="text" name="message_search" placeholder="Search Message...">
                 </div>
-                <div class="message_list">
+                <div id="message_list" class="message_list">
+
                 </div>
             </div>
 
@@ -147,7 +97,9 @@ date_default_timezone_set('America/New_York');
                       - Before starting to add code to main message area we have to set the layout for how we want to organize the messages in welcome.css
                 -->
 
-                <div id="message_in_main"></div>
+                <div id="recipient_message_area" class="recipient_message_area"></div>
+
+                <div id="user_message_area" class="user_message_area"></div>
 
             </div> 
 
