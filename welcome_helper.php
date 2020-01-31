@@ -60,7 +60,7 @@ function groupChat(User $user){
    // If a chat exists... 
     if($chat_status){
 	    $group_ID = $chat_status;
-        $parent_message_id = $user->lastMessage($group_ID);
+        $parent_message_id = $user->lastMessage($group_ID); // retrieves last message id
 	    $id_array = array($group_ID, $user_ID, $recipient_ID, $parent_message_id);
 	    echo json_encode($id_array);
     }
@@ -78,7 +78,6 @@ function groupChat(User $user){
 function sendMessage(User $user){
 
     $id_array = json_decode($_POST['id_array']);
-    var_dump($id_array);
     $message_body = $_POST['message'];
     $group_ID = $id_array[0];
     $user_creator_ID = $id_array[1];
@@ -92,11 +91,16 @@ function sendMessage(User $user){
     }
 
 }
+
+function chatThumbs(User $user) {
+    $user_id = $user->getUserid($_POST['login_username']);
+    $chat_records = $user->recipRecord($user_id);
+    echo json_encode($chat_records);
+}
+
 // Function needed to load chats between two users. Will also be working with jQuery
 function loadChat(User $user){
-	
-    /* */
-    
+    $chat_messages_info = $user->getMessages();
 
 }
 
@@ -112,10 +116,10 @@ if(isset($_POST["type"])){
             break;
         case "sendMessage":
             sendMessage($user);
-	    break;
-	case "loadChat":
-	    loadChat($user);
-	    break;
+	        break;
+	    case "chatThumbs":
+	        chatThumbs($user);
+	        break;
     }
 }
 
