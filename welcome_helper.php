@@ -100,8 +100,19 @@ function chatThumbs(User $user) {
 
 // Function needed to load chats between two users. Will also be working with jQuery
 function loadChat(User $user){
+    // Values needed to update hidden id array for sending messages
+    $user_id = $user->getUserId($_SESSION['login_username']);
+    $recip_id = $_POST['recip_id'];
+    $group_id = $_POST['group_id'];
+    $parent_message_id = $user->lastMessage($group_id);
+
+    $id_array = array($group_id, $user_id, $recip_id, $parent_message_id);
+    // contains the messages of a group/chat
     $chat_messages_info = $user->getMessages($_POST['group_id']);
-    echo json_encode($chat_messages_info);
+
+    $convo_data_array = array($id_array, $chat_messages_info);
+    
+    echo json_encode($convo_data_array);
 }
 
 // Added a sendMessage condition

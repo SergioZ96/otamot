@@ -101,7 +101,7 @@ date_default_timezone_set('America/New_York');
                 -->
 
                 <div id="recipient_message_area" class="recipient_message_area"></div>
-
+                <br>
                 <div id="user_message_area" class="user_message_area"></div>
 
             </div> 

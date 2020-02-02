@@ -5,7 +5,7 @@ $(document).ready(function() {
     $('#recipient_input').keyup(function() {
         var recipient_input = $("#recipient_input").val();
         $.post('welcome_helper.php', { recipient: recipient_input, type: "recipientCheck" },
-        function(data,status){
+        function(data){
             $('#feedback').html(data).show();
 
             // Responsible for disabling/enabling chat button
@@ -25,7 +25,7 @@ $(document).ready(function() {
     $('#chat_button').click(function() {
         var recipient = $("#recipient_input").val();
         $.post('welcome_helper.php', { data : recipient, type: "groupChat" }, 
-        function(data,status){
+        function(data){
             var id_array = data;
             $("#hidden_array").val(id_array);
 
@@ -62,18 +62,27 @@ $(document).ready(function() {
         var i, usernames = "";
         
         for (i = 0; i < obj.length ; i++){
-            usernames += "<button id='thumbnail" + obj[i].group_id + "' class='thumbnail' value='" + obj[i].group_id + "'>" + obj[i].username + "</button><br>"; // we concatenate all usernames within JSON object
+            usernames += "<button id='thumbnail" + obj[i].group_id + "' class='thumbnail' data-value='" + obj[i].user_id + "' value='" + obj[i].group_id + "'>" + obj[i].username + "</button><br>"; // we concatenate all usernames within JSON object
         }
         $("#message_list").html(usernames).show();
 
         $('.thumbnail').click(function() {
-            // Possibly not retrieving and passing value of thumbnail button
+
+            document.getElementById("messagebar_container").style.display = "block";
+
+            var string_recip_id = $(this).attr("data-value");
+            var recip_id = parseInt(string_recip_id);
+
             var string_group_id = $(this).attr("value"); 
             var group_id = parseInt(string_group_id);
-            $.post('welcome_helper.php', {group_id: group_id, type: "loadChat"}, 
+
+            $.post('welcome_helper.php', {recip_id: recip_id, group_id: group_id, type: "loadChat"}, 
             function(data) {
                 var obj = JSON.parse(data);
-                $("#user_message_area").html(obj[0].message_body).show();
+                
+                $("#recipient_message_area").html(obj[0]).show();
+
+                $("#user_message_area").html(obj[1][0].message_body).show();
             });
         });
 
