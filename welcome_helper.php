@@ -100,8 +100,8 @@ function chatThumbs(User $user) {
 
 // Function needed to load chats between two users. Will also be working with jQuery
 function loadChat(User $user){
-    $chat_messages_info = $user->getMessages();
-
+    $chat_messages_info = $user->getMessages($_POST['group_id']);
+    echo json_encode($chat_messages_info);
 }
 
 // Added a sendMessage condition
@@ -119,7 +119,10 @@ if(isset($_POST["type"])){
 	        break;
 	    case "chatThumbs":
 	        chatThumbs($user);
-	        break;
+            break;
+        case "loadChat":
+            loadChat($user);
+            break;
     }
 }
 

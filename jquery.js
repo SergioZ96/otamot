@@ -62,8 +62,60 @@ $(document).ready(function() {
         var i, usernames = "";
         
         for (i = 0; i < obj.length ; i++){
-            usernames += "<div class='thumbnail'>" + obj[i].username + "</div><br>"; // we concatenate all usernames within JSON object
+            usernames += "<button id='thumbnail" + obj[i].group_id + "' class='thumbnail' value='" + obj[i].group_id + "'>" + obj[i].username + "</button><br>"; // we concatenate all usernames within JSON object
         }
         $("#message_list").html(usernames).show();
+
+        $('.thumbnail').click(function() {
+            // Possibly not retrieving and passing value of thumbnail button
+            var string_group_id = $(this).attr("value"); 
+            var group_id = parseInt(string_group_id);
+            $.post('welcome_helper.php', {group_id: group_id, type: "loadChat"}, 
+            function(data) {
+                var obj = JSON.parse(data);
+                $("#user_message_area").html(obj[0].message_body).show();
+            });
+        });
+
+        /*
+        $('.thumbnail').on('click', '#user_message_area', function(){
+            var string_group_id = $(this).attr("value");
+            var group_id = parseInt(string_group_id);
+            $.post('welcome_helper.php', {group_id: group_id, type: "loadChat"},
+            function(data2){
+                var obj = JSON.parse(data2);
+                $("#user_message_area").html(obj[0].message_body).show();
+            });
+        });
+        */
+
+        
+       
     });
 });
+
+
+
+
+/* 
+$('#yourContainer').on('click', '#approve', function(){
+    //your code here..
+}); 
+*/
+
+/* Used to load messages of a chat in main message area */
+/*
+$(document).ready(function() {
+    $('#thumbnail1').click(function() {
+        // Possibly not retrieving and passing value of thumbnail button
+        var string_id = $('#thumbnail1').attr("value");
+        var group_id = parseInt(string_id); 
+        $.post('welcome_helper.php', {group_id: group_id, type: "loadChat"}, 
+        function(data) {
+            var obj = JSON.parse(data);
+            $("#user_message_area").html(obj[0].message_body).show();
+        });
+    });
+});
+*/
+

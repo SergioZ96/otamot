@@ -2,6 +2,7 @@
 // ini_set() function allows a script to temporarily override a setting in PHP's configuration file.
 // we are turning the display_errors setting to on, which is represented by the number 1. The default value is set to off
 // as well as display_startup_errors, which is used to find errors during PHP's startup sequence
+// error_reporting() sets which PHP errors are reported
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
@@ -11,6 +12,7 @@ require_once('user.class.php');
 
 
 // starting a session necessary for each individual user trying to use the website
+// starts a new session or resumes an existing session
 session_start();
 
 

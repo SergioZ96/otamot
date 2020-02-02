@@ -36,8 +36,11 @@ date_default_timezone_set('America/New_York');
             .thumbnail {
                 height: 15%;
                 width: 100%;
-                background-color: powderblue;
-                border: 5px solid blue;
+                background-color: #F8F8F8;
+                border: 2px solid #E8E8E8;
+                font-family: "Tahoma", Geneva, sans-serif; 
+                font-size: 15px;
+                cursor: pointer;
             }
         </style>
         <script type="text/javascript">

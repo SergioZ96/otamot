@@ -207,12 +207,28 @@ class User
 		return $groupId["group_id"];
 	}
 
+	// Responsible for retrieving messages from a conversation/chat to load
 	public function getMessages($group_id){
 		// Query needs to get all message_id's that have the same recipient_group_id's from message_recipient table
-		$this->stmt = $this->db->prep("SELECT `message_body` FROM `Message` WHERE id IN (SELECT `message_id` FROM `Message_Recipient` WHERE recipient_group_id=:group_id)");
+		$this->stmt = $this->db->prep("SELECT `creator_id`, `message_body`, `create_date` FROM `Message` WHERE id IN (SELECT `message_id` FROM `Message_Recipient` WHERE recipient_group_id=:group_id)");
 		$this->stmt->bindParam(':group_id', $group_id);
 		$this->stmt->execute();
-		$messages = $this->stmt->fetch(PDO::FETCH_ASSOC);
+		$messages = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+		return $messages;
+	}
+
+	# Necessary for setting up chat thumbnails
+	public function recipRecord($user_id){
+		// This function returns an array of recipients names, recipients id and recipients group id of all existing chats
+		$this->stmt = $this->db->prep("SELECT `username`,`user_id`,`group_id` 
+										FROM `Users`,`User_Group` WHERE `group_id` IN 
+											(SELECT `group_id` FROM `User_Group` WHERE user_id=:user_id) 
+											and user_id!=:user_id_two and User_Group.user_id = Users.id;");
+		$this->stmt->bindParam(':user_id', $user_id);
+		$this->stmt->bindParam(':user_id_two', $user_id);
+		$this->stmt->execute();
+		$chat_recip_info = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+		return $chat_recip_info;
 	}
 
 

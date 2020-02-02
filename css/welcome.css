@@ -54,14 +54,30 @@ html, body {
     .sidebar .message_list {
         grid-column: 1/1;
         grid-row: 2/3;
-        border: 5px solid green;
+        
     }
 
 .main {
     grid-column: 2/3;
     grid-row: 2/3;
-    background: white;
+    background: #F9E4B7;
+    overflow: auto; /* similar to scroll, adds scrollbars when necessary */
 }
+/*
+    .main .recipient_message_area {
+        display: grid;
+        grid-column: 1/2;
+        grid-row: 1/1;
+        border: 5px solid blue;
+    }
+
+    .main .user_message_area {
+        display: grid;
+        grid-column: 2/3;
+        grid-row: 1/1;
+        border: 5px solid red;
+    }
+*/
 
 .messagebar {
     grid-column: 2/3;
