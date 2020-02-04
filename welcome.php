@@ -42,6 +42,20 @@ date_default_timezone_set('America/New_York');
                 font-size: 15px;
                 cursor: pointer;
             }
+
+            .user_messages {
+                position: relative;
+                width: 350px;
+                top: 0;
+                left: 90%;
+            }
+
+            .recip_messages {
+                position: relative;
+                width: 350px;
+                top: 0;
+                left: 0;
+            }
         </style>
         <script type="text/javascript">
             var login_username = "<?php echo $_SESSION['login_username']; ?>";
@@ -100,9 +114,8 @@ date_default_timezone_set('America/New_York');
                       - Before starting to add code to main message area we have to set the layout for how we want to organize the messages in welcome.css
                 -->
 
-                <div id="recipient_message_area" class="recipient_message_area"></div>
-                <br>
-                <div id="user_message_area" class="user_message_area"></div>
+                <div id="message_area" class="message_area"></div>
+                
 
             </div> 
 

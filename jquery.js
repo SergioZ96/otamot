@@ -69,13 +69,6 @@ $(document).ready(function() {
         $('.thumbnail').click(function() {
 
             document.getElementById("messagebar_container").style.display = "block";
-            /*
-            var string_recip_id = $(this).attr("data-value");
-            var recip_id = parseInt(string_recip_id);
-
-            var string_group_id = $(this).attr("value"); 
-            var group_id = parseInt(string_group_id);
-            */
 
             var recip_id = $(this).attr("data-value");
             var group_id = $(this).attr("value");
@@ -84,13 +77,29 @@ $(document).ready(function() {
                 var obj = JSON.parse(data);
                 
                 $("#hidden_array").val(obj["id_array"]);
-                //$("#recipient_message_area").html(obj[0]).show();
+                
                 var i, messages = "";
+                var id_array = JSON.parse(obj["id_array"]);
+                var user_id = id_array[1];
+                var recipient_id = id_array[2];
                 for(i = 0; i < obj["chat_messages"].length; i++){
-                    messages += "<p>" + obj["chat_messages"][i].message_body + "</p><br>";
+                    // so here we have to separate what the users and recipients messages are so they can
+                    // be divided on the main message area
+                    // if (user_id is == to obj["chat_messages"][i].creator_id)
+                    if (user_id == obj["chat_messages"][i].creator_id){
+                        // messages += "..." -> positioning has to be on right side
+                        messages += "<p class='user_messages'>" + obj["chat_messages"][i].message_body + "</p><br>";
+                    }
+                    // else if (recipient_id is == to obj["chat_messages"][i].creator_id)
+                    else if (recipient_id == obj["chat_messages"][i].creator_id){
+                        // messages += "..." -> positioning has to be on the left side
+                        messages += "<p class='recip_messages'>" + obj["chat_messages"][i].message_body + "</p><br>";
+                    }
+                    //messages += "<p class='messages'>" + obj["chat_messages"][i].message_body + "</p><br>";
                     
                 }
-                $("#user_message_area").html(messages).show();
+                $("#message_area").html(messages).show();
+                
             });
         });
        

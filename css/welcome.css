@@ -56,12 +56,15 @@ html, body {
         grid-row: 2/3;
         
     }
+     
 
 .main {
     grid-column: 2/3;
     grid-row: 2/3;
     background: #F9E4B7;
-    overflow: auto; /* similar to scroll, adds scrollbars when necessary */
+    /* similar to scroll, adds scrollbars when necessary */
+    overflow-x: hidden; /* horizontal */
+    overflow-y: scroll; /* vertical */
 }
 /*
     .main .recipient_message_area {

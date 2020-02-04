@@ -117,7 +117,7 @@ function loadChat(User $user){
     echo json_encode($convo_data_array);
 }
 
-// Added a sendMessage condition
+// Function handler that works upon receiving type value from jQuery post
 if(isset($_POST["type"])){
     $type = $_POST["type"];
     switch($type){

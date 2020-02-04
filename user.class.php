@@ -210,7 +210,8 @@ class User
 	// Responsible for retrieving messages from a conversation/chat to load
 	public function getMessages($group_id){
 		// Query needs to get all message_id's that have the same recipient_group_id's from message_recipient table
-		$this->stmt = $this->db->prep("SELECT `creator_id`, `message_body`, `create_date` FROM `Message` WHERE id IN (SELECT `message_id` FROM `Message_Recipient` WHERE recipient_group_id=:group_id)");
+		$this->stmt = $this->db->prep("SELECT `creator_id`, `message_body`, `create_date` FROM `Message` WHERE id IN 
+										(SELECT `message_id` FROM `Message_Recipient` WHERE recipient_group_id=:group_id)");
 		$this->stmt->bindParam(':group_id', $group_id);
 		$this->stmt->execute();
 		$messages = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
