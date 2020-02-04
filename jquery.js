@@ -69,62 +69,30 @@ $(document).ready(function() {
         $('.thumbnail').click(function() {
 
             document.getElementById("messagebar_container").style.display = "block";
-
+            /*
             var string_recip_id = $(this).attr("data-value");
             var recip_id = parseInt(string_recip_id);
 
             var string_group_id = $(this).attr("value"); 
             var group_id = parseInt(string_group_id);
+            */
 
+            var recip_id = $(this).attr("data-value");
+            var group_id = $(this).attr("value");
             $.post('welcome_helper.php', {recip_id: recip_id, group_id: group_id, type: "loadChat"}, 
             function(data) {
                 var obj = JSON.parse(data);
                 
-                $("#recipient_message_area").html(obj[0]).show();
-
-                $("#user_message_area").html(obj[1][0].message_body).show();
+                $("#hidden_array").val(obj["id_array"]);
+                //$("#recipient_message_area").html(obj[0]).show();
+                var i, messages = "";
+                for(i = 0; i < obj["chat_messages"].length; i++){
+                    messages += "<p>" + obj["chat_messages"][i].message_body + "</p><br>";
+                    
+                }
+                $("#user_message_area").html(messages).show();
             });
         });
-
-        /*
-        $('.thumbnail').on('click', '#user_message_area', function(){
-            var string_group_id = $(this).attr("value");
-            var group_id = parseInt(string_group_id);
-            $.post('welcome_helper.php', {group_id: group_id, type: "loadChat"},
-            function(data2){
-                var obj = JSON.parse(data2);
-                $("#user_message_area").html(obj[0].message_body).show();
-            });
-        });
-        */
-
-        
        
     });
 });
-
-
-
-
-/* 
-$('#yourContainer').on('click', '#approve', function(){
-    //your code here..
-}); 
-*/
-
-/* Used to load messages of a chat in main message area */
-/*
-$(document).ready(function() {
-    $('#thumbnail1').click(function() {
-        // Possibly not retrieving and passing value of thumbnail button
-        var string_id = $('#thumbnail1').attr("value");
-        var group_id = parseInt(string_id); 
-        $.post('welcome_helper.php', {group_id: group_id, type: "loadChat"}, 
-        function(data) {
-            var obj = JSON.parse(data);
-            $("#user_message_area").html(obj[0].message_body).show();
-        });
-    });
-});
-*/
-

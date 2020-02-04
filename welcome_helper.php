@@ -52,7 +52,7 @@ function groupChat(User $user){
         Function: inserts new records into Group and User_Group tables
     */
 
-    $group_name = NULL;
+    
     $user_ID = $user->getUserId($_SESSION['login_username']);
     $recipient_ID = $user->getUserId($_POST['data']);
     $chat_status = $user->chatExists($user_ID, $recipient_ID);
@@ -66,6 +66,7 @@ function groupChat(User $user){
     }
     // Otherwise, a new group is created
     else{
+        $group_name = NULL;
 	    $parent_message_id = NULL;
         $group_ID = $user->addGroup($group_name);
         $id_array = array($group_ID, $user_ID, $recipient_ID, $parent_message_id);
@@ -106,11 +107,12 @@ function loadChat(User $user){
     $group_id = $_POST['group_id'];
     $parent_message_id = $user->lastMessage($group_id);
 
-    $id_array = array($group_id, $user_id, $recip_id, $parent_message_id);
+    $id_array = array((int)$group_id, (int)$user_id, (int)$recip_id, (int)$parent_message_id);
     // contains the messages of a group/chat
     $chat_messages_info = $user->getMessages($_POST['group_id']);
 
-    $convo_data_array = array($id_array, $chat_messages_info);
+    // necessary to json_encode id_array to maintain array format instead of it being a string
+    $convo_data_array = array("id_array" => json_encode($id_array), "chat_messages" => $chat_messages_info);
     
     echo json_encode($convo_data_array);
 }
