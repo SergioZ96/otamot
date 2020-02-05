@@ -41,21 +41,31 @@ $(document).ready(function() {
 });
 
 // jQuery for replacing submission form when sending a message
-
+/*
 $(document).ready(function() {
     $('#send_button').click(function() {
         var message = $("#message_input").val();
         var id_array = $("#hidden_array").val();
         $.post('welcome_helper.php', {message: message, id_array: id_array, type: "sendMessage"},
         function(data){
-            $("#user_message_area").html(data).show();
+            var messages = "";
+            var objId_array = JSON.parse(id_array);
+            var user_id = objId_array[1];
+            var recipient_id = objId_array[2];
+            
+            messages += "<p class='user_messages'>" + JSON.parse(data) + "</p><br>";
+            
+            $("#message_area").html(messages).show();
             document.getElementById("message_input").value = "";
         });
     });
 });
-
+*/
 /* Used to retrieve data of user's existing chats (recipients name, recip_id, group_id) */
 $(document).ready(function() {
+
+    var messages = "";
+
     $.post('welcome_helper.php', {login_username: login_username, type: "chatThumbs"},
     function(data){ // data holds JSON representation as string
         var obj = JSON.parse(data); // converts string to JSON object
@@ -78,7 +88,7 @@ $(document).ready(function() {
                 
                 $("#hidden_array").val(obj["id_array"]);
                 
-                var i, messages = "";
+                var i;
                 var id_array = JSON.parse(obj["id_array"]);
                 var user_id = id_array[1];
                 var recipient_id = id_array[2];
@@ -98,10 +108,30 @@ $(document).ready(function() {
                     //messages += "<p class='messages'>" + obj["chat_messages"][i].message_body + "</p><br>";
                     
                 }
+                
                 $("#message_area").html(messages).show();
                 
             });
         });
        
     });
+
+    $('#send_button').click(function() {
+        var message = $("#message_input").val();
+        var id_array = $("#hidden_array").val();
+        $.post('welcome_helper.php', {message: message, id_array: id_array, type: "sendMessage"},
+        function(data){
+            
+            var objId_array = JSON.parse(id_array);
+            var user_id = objId_array[1];
+            var recipient_id = objId_array[2];
+            
+            messages += "<p class='user_messages'>" + JSON.parse(data) + "</p><br>";
+            
+            $("#message_area").html(messages).show();
+            document.getElementById("message_input").value = "";
+        });
+    });
+
+
 });

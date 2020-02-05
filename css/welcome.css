@@ -66,21 +66,10 @@ html, body {
     overflow-x: hidden; /* horizontal */
     overflow-y: scroll; /* vertical */
 }
-/*
-    .main .recipient_message_area {
-        display: grid;
-        grid-column: 1/2;
-        grid-row: 1/1;
-        border: 5px solid blue;
+    .main .message_area {
+        position: relative;
+        
     }
-
-    .main .user_message_area {
-        display: grid;
-        grid-column: 2/3;
-        grid-row: 1/1;
-        border: 5px solid red;
-    }
-*/
 
 .messagebar {
     grid-column: 2/3;

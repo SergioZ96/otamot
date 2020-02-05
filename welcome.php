@@ -45,14 +45,14 @@ date_default_timezone_set('America/New_York');
 
             .user_messages {
                 position: relative;
-                width: 350px;
+                width: 300px;
                 top: 0;
-                left: 90%;
+                left: 80%;
             }
 
             .recip_messages {
                 position: relative;
-                width: 350px;
+                width: 300px;
                 top: 0;
                 left: 0;
             }
