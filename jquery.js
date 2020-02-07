@@ -1,6 +1,4 @@
 
-// We might have to create a function to store the messages pertaining to each chat
-// [( recip_id_1 : messages ), ( recip_id_2 : messages ), ...]
 
 $(document).ready(function() {
 
@@ -31,6 +29,7 @@ $(document).ready(function() {
          *  Also used to pass an array in JSON containing group id, user id, recipient id 
          *  in that order as a hidden field to the message form
          */  
+        var messages = "";
         $('#chat_button').click(function() {
 
             var recipient = $("#recipient_input").val();
@@ -45,6 +44,52 @@ $(document).ready(function() {
                     document.getElementById("new_message_container").style.display = "none";
                     document.getElementById("feedback").innerHTML = "";
                     document.getElementById("messagebar_container").style.display = "block";
+                }
+
+                // Here we have to load the chat if the theres an existing chat
+                
+                var id_array = JSON.parse(id_array);
+                var recip_id = id_array[2];
+                var group_id = id_array[0];
+                
+                chatRecip_selector = "#thumbnail" + recip_id;
+                // if the chat thumbnail exists, proceed loading the messages for that chat
+                if($(chatRecip_selector).length){
+
+                    $.post('welcome_helper.php', {recip_id: recip_id, group_id: group_id, type: "loadChat"}, 
+                    function(data) {
+                        
+                        // cleans the messages string of past HTML messages
+                        messages = "";
+                        var obj = JSON.parse(data);
+                        
+                        //$("#hidden_array").val(obj["id_array"]);
+                        
+                        var i;
+                        var id_array = JSON.parse(obj["id_array"]);
+                        var user_id = id_array[1];
+                        var recipient_id = id_array[2];
+                        for(i = 0; i < obj["chat_messages"].length; i++){
+                            // so here we have to separate what the users and recipients messages are so they can
+                            // be divided on the main message area
+                            // if (user_id is == to obj["chat_messages"][i].creator_id)
+                            if (user_id == obj["chat_messages"][i].creator_id){
+                                // messages += "..." -> positioning has to be on right side
+                                messages += "<p class='user_messages'>" + obj["chat_messages"][i].message_body + "</p><br>";
+                            }
+                            // else if (recipient_id is == to obj["chat_messages"][i].creator_id)
+                            else if (recipient_id == obj["chat_messages"][i].creator_id){
+                                // messages += "..." -> positioning has to be on the left side
+                                messages += "<p class='recip_messages'>" + obj["chat_messages"][i].message_body + "</p><br>";
+                            }
+                            //messages += "<p class='messages'>" + obj["chat_messages"][i].message_body + "</p><br>";
+                            
+                        }
+                        
+                        $("#message_area").html(messages).show();
+
+                        
+                    });
                 }
             });
         });
@@ -73,8 +118,11 @@ $(document).ready(function() {
         
             $('.thumbnail').click(function() {
                 
+                // responsible for removing dynamically created HTML messages when another thumbnail is clicked
+                // pretty much clearing the message area
                 $(".user_messages").remove();
                 $(".recip_messages").remove();
+
                 document.getElementById("messagebar_container").style.display = "block";
 
                 var recip_id = $(this).attr("data-value");
@@ -82,6 +130,7 @@ $(document).ready(function() {
                 $.post('welcome_helper.php', {recip_id: recip_id, group_id: group_id, type: "loadChat"}, 
                 function(data) {
                     
+                    // cleans the messages string of past HTML messages
                     messages = "";
                     var obj = JSON.parse(data);
                     
@@ -126,9 +175,9 @@ $(document).ready(function() {
             $.post('welcome_helper.php', {message: message, id_array: id_array, type: "sendMessage"},
             function(data){
                 
-                var objId_array = JSON.parse(id_array);
-                var user_id = objId_array[1];
-                var recipient_id = objId_array[2];
+                //var objId_array = JSON.parse(id_array);
+                //var user_id = objId_array[1];
+                //var recipient_id = objId_array[2];
                 
                 messages += "<p class='user_messages'>" + JSON.parse(data) + "</p><br>";
                 
