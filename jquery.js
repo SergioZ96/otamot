@@ -169,6 +169,11 @@ $(document).ready(function() {
          *  Responsible for displaying recently sent message in the main message area
          *  by adding concatenating HTML string to messages variable
          */
+        //$(".body").attr("onload", "setInterval(SendMessage, 1000, messages)");
+        //SendMessage(messages);
+        //);
+
+        //function SendMessage(messages){
         $('#send_button').click(function() {
             var message = $("#message_input").val();
             var id_array = $("#hidden_array").val();
@@ -183,8 +188,33 @@ $(document).ready(function() {
                 
                 $("#message_area").html(messages).show();
                 document.getElementById("message_input").value = "";
+                
             });
         });
+        //}
 
+        //SendMessage(messages);
 
 });
+
+/*
+function SendMessage(messages){
+    $('#send_button').click(function() {
+        var message = $("#message_input").val();
+        var id_array = $("#hidden_array").val();
+        $.post('welcome_helper.php', {message: message, id_array: id_array, type: "sendMessage"},
+        function(data){
+            
+            //var objId_array = JSON.parse(id_array);
+            //var user_id = objId_array[1];
+            //var recipient_id = objId_array[2];
+            
+            messages += "<p class='user_messages'>" + JSON.parse(data) + "</p><br>";
+            
+            $("#message_area").html(messages).show();
+            document.getElementById("message_input").value = "";
+            
+        });
+    });
+}
+*/

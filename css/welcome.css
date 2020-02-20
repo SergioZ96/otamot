@@ -34,13 +34,20 @@ html, body {
         position: sticky;
     }
 
-        .sidebar .newMess_and_Search input[type=submit] {
+        .sidebar .newMess_and_Search .new_message_button {
             grid-column: 1/1;
             grid-row: 1/2;
-            width: 250px;
+            border: 1px solid white;
+            border-radius: 5px;
+            background-color: #65d6d1;
+            width: 150px;
             height: 75px;
             padding: 5px 10px;
+
+            font-family: "Montserrat", sans-serif;
+            color: #7e7e7e;
             font-size: 16px;
+            cursor: pointer;
         }
 
         .sidebar .newMess_and_Search input[type=text] {
@@ -84,14 +91,6 @@ html, body {
         outline-width: 0; /*removes highlight of input field*/
     }
 
-    .messagebar input[type=submit] {
-        -webkit-box-sizing: content-box;
-        -moz-box-sizing: content-box;
-        box-sizing: content-box; /*necessary for changing size of the box */
-        justify-self: start;
-        margin-top: 20px;
-    }
-
 nav {
     display: grid;
     grid-column-start: auto;
@@ -101,7 +100,7 @@ nav {
 }
 
     nav .navbar {
-        background-color: grey;
+        background-color: #f2f2f2;
         display: grid;
         place-items: center;
         grid-auto-flow: column;

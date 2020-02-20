@@ -139,20 +139,21 @@ function loginUser(User $user){
 	</script>
 </head>
 <body>
-		<h1>Otamot Welcomes You!</h1>
+		<img src="/otamot/otamot_logo.png" alt="otamot logo">
+		<!--<h1>Otamot Welcomes You!</h1>-->
 		<br>
 
-		<button class="regButton" onclick="formShow(1)">Register</button>
-		<button class="logButton" onclick="formShow(2)">Login</button>
-
+		<button class="regButton" onclick="formShow(1)"><b>Register</b></button>
+		<button class="logButton" onclick="formShow(2)"><b>Login</b></button>
+		
 		<div class="container">
 			<form id="register_form" method="POST">
-				First Name: <input type="text" name="firstname" required><br>
-				Last Name: <input type="text" name="lastname" required><br>
-				Username: <input type="text" name="username" required><br>
-				Email: <input type="text" name="email" required><br>
-				Password: <input type="password" name="password" required><br>
-				Confirm Password: <input type="password" name="conpassword" required><br>
+				<input type="text" name="firstname" placeholder="First Name" required><br>
+				<input type="text" name="lastname" placeholder="Last Name" required><br>
+				<input type="text" name="username" placeholder="Username" required><br>
+				<input type="text" name="email" placeholder="Email" required><br>
+				<input type="password" name="password" placeholder="Password" required><br>
+				<input type="password" name="conpassword" placeholder="Confirm Password" required><br>
 				<input type="submit" value="Submit" name="reg_submit">
 				
 			</form>
@@ -160,8 +161,8 @@ function loginUser(User $user){
 
 		<div class="container">
 			<form id="login_form" style="display:none" method="POST">	
-				Username or Email: <input type="text" name="login_username" required><br>
-				Password: <input type="password" name="login_password" required><br>
+				<input type="text" name="login_username" placeholder="Username or Email" required><br>
+				<input type="password" name="login_password" placeholder="Password" required><br>
 				<input type="submit" value="Submit" name="login_submit">
 			</form>
 		</div>

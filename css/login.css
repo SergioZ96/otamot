@@ -2,20 +2,52 @@ body {
     text-align: center;
 }
 
-.container {
-    margin: auto;
-    width: 500px; /* width size of container is set to 500px */
+body {
+	margin: auto;
 }
 
-.container input {
-    margin: auto; /* horizontally centers the element within its container */
-    width: 100%; /* input fields will take 100% width of its container (500px) */
+.container {
+    margin: auto; /* width size of container is set to 500px */
+	/*background-color: #f2f2f2;
+	border-radius: 5px;
+	padding: 20px;*/
+}
+
+.container form{
+	background-color: #f2f2f2;
+	border-radius: 5px;
+	padding: 20px;
+}
+
+.container input[type=text], input[type=password] {
+     /* horizontally centers the element within its container */
+	width: 30%; /* input fields will take 100% width of its container (500px) */
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.container input[type=submit] {
+	background-color: #65d6d1;
+	border: 1px solid white;
+	border-radius: 5px;
+	margin: 0;
+	padding: 6px 12px;
+
+	font-family: "Montserrat", sans-serif;
+	color: white;
+	font-size: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	
 }
 
 .regButton {
     background-color: #46b44c;
 	color: white;
-	font-family: "Impact", Charcoal, sans-serif;
+	font-family: "Montserrat", sans-serif;
 	font-size: 20px;
 	border-radius: 5px;
 	padding: 5px 10px;
@@ -30,7 +62,7 @@ body {
 .logButton {
     background-color: #4682b4;
 	color: white;
-	font-family: "Impact", Charcoal, sans-serif;
+	font-family: "Montserrat", sans-serif;
 	font-size: 20px;
 	border-radius: 5px;
 	padding: 5px 10px;

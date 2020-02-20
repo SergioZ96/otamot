@@ -79,6 +79,7 @@ date_default_timezone_set('America/New_York');
 	    </script>
     </head>
 
+    <!--<body onload="setInterval(SendMessage,1000,$('#message_input').val());"> -->
     <body>
         <div class="new_message_container" id="new_message_container" style="display:none" name="new_message_container">
             <input type="text" id="recipient_input" name="recipient" placeholder="Type Recipient's Username or Email...">
@@ -90,7 +91,7 @@ date_default_timezone_set('America/New_York');
         <div class="grid_container">
             <nav>
                 <div class="navbar">
-                    <h1>Otamot</h1>
+                    <img src="/otamot/otamot_logo.png" alt="otamot logo" width="70px" height="70px">
                     <div class="links">
                         <a href="#search">Search</a>
                         <a href="#settings">Settings</a>
@@ -100,7 +101,7 @@ date_default_timezone_set('America/New_York');
             </nav>
             <div class="sidebar">
                 <div class="newMess_and_Search">
-                    <button id="new_message_button" type="submit" name="new_message" onclick="formShow(1);">New Message</button>
+                    <button id="new_message_button" class="new_message_button" type="submit" name="new_message" onclick="formShow(1);"><b>New Message</b></button>
                     <input type="text" name="message_search" placeholder="Search Message...">
                 </div>
                 <div id="message_list" class="message_list">
