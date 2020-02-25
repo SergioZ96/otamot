@@ -41,7 +41,7 @@ $(document).ready(function() {
                 // Responsible for resetting new message container
                 if($('#feedback:contains("Recipient Exists")').length > 0){
                     document.getElementById("recipient_input").value = "";
-                    document.getElementById("new_message_container").style.display = "none";
+                    document.querySelector(".bg-modal").style.display = "none";
                     document.getElementById("feedback").innerHTML = "";
                     document.getElementById("messagebar_container").style.display = "block";
                 }
@@ -107,7 +107,7 @@ $(document).ready(function() {
             var i, usernames = "";
             
             for (i = 0; i < obj.length ; i++){
-                usernames += "<button id='thumbnail" + obj[i].group_id + "' class='thumbnail' data-value='" + obj[i].user_id + "' value='" + obj[i].group_id + "'>" + obj[i].username + "</button><br>"; // we concatenate all usernames within JSON object
+                usernames += "<button id='thumbnail" + obj[i].group_id + "' class='thumbnail' data-value='" + obj[i].user_id + "' value='" + obj[i].group_id + "'>" + obj[i].username + "</button>"; // we concatenate all usernames within JSON object
             }
             $("#message_list").html(usernames).show();
 
@@ -173,48 +173,26 @@ $(document).ready(function() {
         //SendMessage(messages);
         //);
 
-        //function SendMessage(messages){
+        
         $('#send_button').click(function() {
-            var message = $("#message_input").val();
             var id_array = $("#hidden_array").val();
-            $.post('welcome_helper.php', {message: message, id_array: id_array, type: "sendMessage"},
-            function(data){
-                
-                //var objId_array = JSON.parse(id_array);
-                //var user_id = objId_array[1];
-                //var recipient_id = objId_array[2];
-                
-                messages += "<p class='user_messages'>" + JSON.parse(data) + "</p><br>";
-                
-                $("#message_area").html(messages).show();
-                document.getElementById("message_input").value = "";
-                
-            });
-        });
-        //}
+            var message = $("#message_input").val();
+            if (message.localeCompare("") == 0){
+                alert("Cannot send an empty message");
+            }
+            else{
 
-        //SendMessage(messages);
+                $.post('welcome_helper.php', {message: message, id_array: id_array, type: "sendMessage"},
+                function(data){
+                    
+                    messages += "<p class='user_messages'>" + JSON.parse(data) + "</p><br>";
+                    
+                    $("#message_area").html(messages).show();
+                    document.getElementById("message_input").value = "";
+                    
+                });
+            }
+        });
 
 });
 
-/*
-function SendMessage(messages){
-    $('#send_button').click(function() {
-        var message = $("#message_input").val();
-        var id_array = $("#hidden_array").val();
-        $.post('welcome_helper.php', {message: message, id_array: id_array, type: "sendMessage"},
-        function(data){
-            
-            //var objId_array = JSON.parse(id_array);
-            //var user_id = objId_array[1];
-            //var recipient_id = objId_array[2];
-            
-            messages += "<p class='user_messages'>" + JSON.parse(data) + "</p><br>";
-            
-            $("#message_area").html(messages).show();
-            document.getElementById("message_input").value = "";
-            
-        });
-    });
-}
-*/

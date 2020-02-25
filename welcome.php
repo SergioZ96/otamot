@@ -34,27 +34,45 @@ date_default_timezone_set('America/New_York');
         <link rel="stylesheet" href="css/welcome.css" type="text/css" />
         <style>
             .thumbnail {
-                height: 15%;
-                width: 100%;
+                height: 10%;
+                min-height: 35px;
+                width: 95%;
+                display: block;
+                margin: 0% auto;
                 background-color: #F8F8F8;
                 border: 2px solid #E8E8E8;
+                border-radius: 10px;
+
                 font-family: "Tahoma", Geneva, sans-serif; 
                 font-size: 15px;
                 cursor: pointer;
+                outline-width: 0;
             }
 
             .user_messages {
                 position: relative;
-                width: 300px;
+                margin: auto 0%;
+                width: 30%;
+                min-width: 200px;
                 top: 0;
-                left: 80%;
+                left: 50%;
+                border: 1px solid white;
+                border-radius: 4px;
+                padding: 10px;
+                background-color: #F3E5AB;
             }
 
             .recip_messages {
                 position: relative;
-                width: 300px;
+                margin: auto 2%;
+                width: 30%;
+                min-width: 200px;
                 top: 0;
                 left: 0;
+                border: 1px solid white;
+                border-radius: 4px;
+                padding: 10px;
+                background-color: #FFFFF0
             }
         </style>
         <script type="text/javascript">
@@ -64,16 +82,24 @@ date_default_timezone_set('America/New_York');
         <script src="jquery.js"></script>
 
         <script> 
-            function formShow(a)
-            {
-                if(a==1){
-                    document.getElementById("new_message_container").style.display="block";
-                    
-                } 
-                else if(a==2) {
-                    document.getElementById("new_message_container").style.display="none";
-                }
 
+            window.onload=function(){
+                var messageButton = document.getElementById("new_message_btn");
+                var cancelButton = document.getElementById("cancel_button");
+
+                messageButton.addEventListener("click", showModal);
+                cancelButton.addEventListener("click", hideModal);
+
+
+            }
+
+            function showModal(){
+                document.querySelector('.bg-modal').style.display = 'flex';
+            }
+
+            function hideModal(){
+                document.querySelector('.bg-modal').style.display = 'none';
+                document.querySelector('#recipient_input').value = "";
             }
         
 	    </script>
@@ -81,32 +107,26 @@ date_default_timezone_set('America/New_York');
 
     <!--<body onload="setInterval(SendMessage,1000,$('#message_input').val());"> -->
     <body>
-        <div class="new_message_container" id="new_message_container" style="display:none" name="new_message_container">
-            <input type="text" id="recipient_input" name="recipient" placeholder="Type Recipient's Username or Email...">
-            <div id="feedback"></div>
-            <button name="new_message_submit" id="chat_button">Chat</button>
-            <button type="button" name="cancel_new_message" onclick="formShow(2);">Cancel</button> 
-        </div>
         
         <div class="grid_container">
-            <nav>
-                <div class="navbar">
-                    <img src="/otamot/otamot_logo.png" alt="otamot logo" width="70px" height="70px">
-                    <div class="links">
-                        <a href="#search">Search</a>
-                        <a href="#settings">Settings</a>
-                        <a href="logout.php">Sign Out</a>
-                    </div>
-                </div>
-            </nav>
+            
             <div class="sidebar">
+                <div class="otamot_logo">
+                    <img src="/otamot/otamot_logo.png" alt="otamot logo" width="90px" height="90px">
+                </div>
                 <div class="newMess_and_Search">
-                    <button id="new_message_button" class="new_message_button" type="submit" name="new_message" onclick="formShow(1);"><b>New Message</b></button>
+                    <button id="new_message_btn" class="new_message_button" type="submit" name="new_message"><b>New Message</b></button>
                     <input type="text" name="message_search" placeholder="Search Message...">
                 </div>
-                <div id="message_list" class="message_list">
 
+                <div id="message_list" class="message_list"></div>
+
+                <div class="links">
+                    <a class="settings" href="#settings">Settings</a>
+                    <a class="logout" href="logout.php">Sign Out</a>
                 </div>
+                
+                 
             </div>
 
             <div class="main">  
@@ -123,10 +143,21 @@ date_default_timezone_set('America/New_York');
             <div class="messagebar" id="messagebar_container" style="display:none">
                 <input type="text" id="message_input" name="message" placeholder="Type Your Message...">
                 <input type="hidden" id="hidden_array" name="hidden_id_array">
-                <button name="send_message_submit" id="send_button">Send</button>
+                <button class="send_btn" name="send_message_submit" id="send_button"><b>Send</b></button>
             </div>
         </div>
-    
+
+        <!-- Modal Section -->
+        <div class="bg-modal">
+
+            <div class="new_message_container" id="new_message_container"  name="new_message_container">
+                <input type="text" id="recipient_input" name="recipient" placeholder="Type Recipient's Username or Email...">
+                <div id="feedback"></div>
+                <button name="new_message_submit" id="chat_button">Chat</button>
+                <button type="button" name="cancel_new_message" id="cancel_button">Cancel</button> 
+            </div>
+
+        </div>
     </body>
 
 </html>
