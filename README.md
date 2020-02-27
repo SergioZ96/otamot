@@ -1,2 +1,2 @@
 # otamot
-Development of messaging and P2P payment app between friends and businesses.
+Development of a messaging app between friends.
