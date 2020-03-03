@@ -15,14 +15,19 @@ $(document).ready(function() {
             var chats = document.querySelectorAll('.thumbnail');
             for(var i = 0; i < chats.length; i++){
                 var id = "#".concat(chats[i].id);
+                var thumb_class = ".".concat(chats[i].className);
                 // see if the innerhtml of any of the buttons w/ class 'thumbnail' match the search box input
                 // if theres a match, show the button using its respective id
                 if(chats[i].innerHTML.includes(chatSearch)){
-                    $(id).show();
+                    $(id).show("slow", function(){
+                        $(id).click(function(){
+                            $(thumb_class).show();
+                        })
+                    });
                 }
                 // if field is empty, show all the thumbnails
                 else if ($("#search_box").val() == "") {
-                    $(".".concat(chats[i].className)).show();
+                    $(thumb_class).show();
                 }
                 // if there are no matches, hide all of the thumbnails
                 else {
