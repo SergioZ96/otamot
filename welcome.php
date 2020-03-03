@@ -116,7 +116,7 @@ date_default_timezone_set('America/New_York');
                 </div>
                 <div class="newMess_and_Search">
                     <button id="new_message_btn" class="new_message_button" type="submit" name="new_message"><b>New Message</b></button>
-                    <input type="text" name="message_search" placeholder="Search Message...">
+                    <input type="text" id="search_box" name="message_search" placeholder="Search Message...">
                 </div>
 
                 <div id="message_list" class="message_list"></div>
@@ -129,7 +129,7 @@ date_default_timezone_set('America/New_York');
                  
             </div>
 
-            <div class="main">  
+            <div class="main" id="main">  
                  <!-- - Div containers for holding the messages between a group chat or two individuals
                             will contain message body and date message was sent/created
                       - Before starting to add code to main message area we have to set the layout for how we want to organize the messages in welcome.css
