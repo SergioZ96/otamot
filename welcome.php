@@ -32,6 +32,7 @@ date_default_timezone_set('America/New_York');
     <head>
         <title>Welcome</title>
         <link rel="stylesheet" href="css/welcome.css" type="text/css" />
+        <link rel="icon" href="/otamot/otamot_no_title.png">
         <style>
             .thumbnail {
                 height: 10%;
