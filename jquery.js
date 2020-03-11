@@ -72,15 +72,13 @@ $(document).ready(function() {
          *  Also used to pass an array in JSON containing group id, user id, recipient id 
          *  in that order as a hidden field to the message form
          */  
-        //var messages = "";
+        var interval;
         $('#chat_button').click(function() {
 
             var recipient = $("#recipient_input").val();
             $.post('welcome_helper.php', { data : recipient, type: "groupChat" }, 
             function(data){
                 var id_array = data;
-                //$("#hidden_array").val(id_array);
-                
            
                 // Responsible for resetting new message container
                 if($('#feedback:contains("Recipient Exists")').length > 0){
@@ -106,7 +104,17 @@ $(document).ready(function() {
                     $(".recip_messages").remove();
                     $("#message_area > br").remove();
 
-                    updateMessages(recip_id, group_id);
+                    if(interval){
+                        clearInterval(interval);
+                        interval = setTimeout(updateMessages, 100, recip_id, group_id);
+                    
+                        interval = setInterval(updateMessages, 5000, recip_id, group_id);
+                    }
+                    else{
+                        interval = setTimeout(updateMessages, 100, recip_id, group_id);
+                    
+                        interval = setInterval(updateMessages, 5000, recip_id, group_id);
+                    }
                    
                 }
             });
@@ -128,9 +136,7 @@ $(document).ready(function() {
          *  Loads chat thumbnails in the sidebar by using recipients username, user id, and group id
          *  Proceeds with creating HTML strings for each thumbnail
          */
-
-        //var messages = "";
-
+        
         $.post('welcome_helper.php', {login_username: login_username, type: "chatThumbs"},
         function(data){ 
             // data holds JSON representation as string
@@ -143,12 +149,12 @@ $(document).ready(function() {
                 usernames += "<button id='thumbnail" + obj[i].group_id + "' class='thumbnail' data-value='" + obj[i].user_id + "' value='" + obj[i].group_id + "'>" + obj[i].username + "</button>"; // we concatenate all usernames within JSON object
             }
             $("#message_list").html(usernames).show();
-
+            
             /*
              *  Loads chat messages specific to recipient/chat after clicking recipient's thumbnail
              *  Proceeds with creating HTML strings for each message pertaining to the chat
              */
-        
+            
             $('.thumbnail').click(function() {
                 
                 // responsible for removing dynamically created HTML messages when another thumbnail is clicked
@@ -163,7 +169,23 @@ $(document).ready(function() {
                 var recip_id = $(this).attr("data-value");
                 var group_id = $(this).attr("value");
 
-                updateMessages(recip_id, group_id);
+                //if interval is already running
+                if(interval){
+                    //clear it
+                    clearInterval(interval);
+                    //setTimeout for faster load of chat
+                    interval = setTimeout(updateMessages, 100, recip_id, group_id);
+                    
+                    //setInterval to start new interval for current chat
+                    interval = setInterval(updateMessages, 5000, recip_id, group_id);
+                }
+                //if no interval is running, then carryout same process 
+                else{
+                    interval = setTimeout(updateMessages, 100, recip_id, group_id);
+                    
+                    interval = setInterval(updateMessages, 5000, recip_id, group_id);
+                }
+                
                 
             });
         
@@ -186,10 +208,9 @@ $(document).ready(function() {
                 $.post('welcome_helper.php', {message: message, id_array: id_array, type: "sendMessage"},
                 function(data){
                     
-                    //M.messages += "<p class='user_messages'>" + JSON.parse(data) + "</p><br>";
+                    
                     $("#message_area").append("<p class='user_messages'>" + JSON.parse(data) + "</p><br>");
                     document.getElementById("message_input").value = "";
-                    //$("#message_area").html(M.messages).show();
                     
                     updateScroll();
                     
@@ -198,58 +219,45 @@ $(document).ready(function() {
             }
         });
 
-        
-        
-        
-        function updateMessages(recip_id, group_id) {
-            //setInterval(function(){
-            //format: group id, user id, recipient id from hidden array
-            //var hidden_array = $("#hidden_array").attr("value");
-            //var recip_id = hidden_array[2];
-            //var group_id = hidden_array[0];
 
+        function updateMessages(recip_id, group_id){
             $.post('welcome_helper.php', {recip_id: recip_id, group_id: group_id, type: "loadChat"}, 
-            function(data) {
+                        function(data) {
 
-                //$(".user_messages").remove();
-                //$(".recip_messages").remove();
-                
-                // cleans the messages string of past HTML messages
-                //messages = "";
-                var obj = JSON.parse(data);
+                            $(".user_messages").remove();
+                            $(".recip_messages").remove();
+                            $("#message_area > br").remove();
 
-                $("#hidden_array").val(obj["id_array"]);
-                
-                var i;
-                var id_array = JSON.parse(obj["id_array"]);
-                var user_id = id_array[1];
-                var recipient_id = id_array[2];
-                for(i = 0; i < obj["chat_messages"].length; i++){
-                    // so here we have to separate what the users and recipients messages are so they can
-                    // be divided on the main message area
-                    // if (user_id is == to obj["chat_messages"][i].creator_id)
-                    if (user_id == obj["chat_messages"][i].creator_id){
-                        // messages += "..." -> positioning has to be on right side
-                        //messages += "<p class='user_messages'>" + obj["chat_messages"][i].message_body + "</p><br>";
-                        $("#message_area").append("<p class='user_messages'>" + obj["chat_messages"][i].message_body + "</p><br>");
-                    }
-                    // else if (recipient_id is == to obj["chat_messages"][i].creator_id)
-                    else if (recipient_id == obj["chat_messages"][i].creator_id){
-                        // messages += "..." -> positioning has to be on the left side
-                        //messages += "<p class='recip_messages'>" + obj["chat_messages"][i].message_body + "</p><br>";
-                        $("#message_area").append("<p class='recip_messages'>" + obj["chat_messages"][i].message_body + "</p><br>");
-                    }
-                    //messages += "<p class='messages'>" + obj["chat_messages"][i].message_body + "</p><br>";
-                    
-                }
-                //$("#message_area").html(messages).show();
-                updateScroll();
+                            var obj = JSON.parse(data);
 
-            });
-            //}, 5000);
-            //return messages;
-        } 
+                            $("#hidden_array").val(obj["id_array"]);
+                            
+                            var i;
+                            var id_array = JSON.parse(obj["id_array"]);
+                            var user_id = id_array[1];
+                            var recipient_id = id_array[2];
+                            for(i = 0; i < obj["chat_messages"].length; i++){
+                                // so here we have to separate what the users and recipients messages are so they can
+                                // be divided on the main message area
+                                // if (user_id is == to obj["chat_messages"][i].creator_id)
+                                if (user_id == obj["chat_messages"][i].creator_id){
+                                    // messages += "..." -> positioning has to be on right side
+                                    $("#message_area").append("<p class='user_messages'>" + obj["chat_messages"][i].message_body + "</p><br>");
+                                }
+                                // else if (recipient_id is == to obj["chat_messages"][i].creator_id)
+                                else if (recipient_id == obj["chat_messages"][i].creator_id){
+                                    // messages += "..." -> positioning has to be on the left side
+                                    $("#message_area").append("<p class='recip_messages'>" + obj["chat_messages"][i].message_body + "</p><br>");
+                                }
+                                
+                            }
+                            
+                            updateScroll();
 
+                    });
+        }
+
+        
        
 
 });
