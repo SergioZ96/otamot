@@ -44,6 +44,12 @@ body {
 	
 }
 
+.container #email_verifier {
+	margin: auto auto;
+    width: 25%;
+    height: 40px;
+}
+
 .regButton {
     background-color: #46b44c;
 	color: white;

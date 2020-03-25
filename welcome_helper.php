@@ -17,6 +17,28 @@ date_default_timezone_set('America/New_York');
 $mypdo = new MYPDO();
 $user = new User();
 
+function emailCheck($mypdo){
+    $query = "SELECT email FROM Users WHERE email=:email";
+
+    if(isset($_POST['email'])){
+        $email = $_POST['email'];
+        $stmt = $mypdo->prep($query);
+        $stmt->bindParam(':email',$email);
+        $stmt->execute();
+        $email_check = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        // if not empty
+        if(!empty($email)){ 
+            if(strcmp($email_check["email"],$email) == 0){ // if the strings are equal, which would be equal to 0
+                echo "";
+            } 
+            else{
+                echo "User does not exist";
+            }
+                
+        }
+    }
+}
 
 
 function recipCheck($mypdo){
@@ -121,6 +143,9 @@ function loadChat(User $user){
 if(isset($_POST["type"])){
     $type = $_POST["type"];
     switch($type){
+        case "emailCheck":
+            emailCheck($mypdo);
+            break;
         case "recipientCheck":
             recipCheck($mypdo);
             break;

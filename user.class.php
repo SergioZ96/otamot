@@ -158,10 +158,10 @@ class User
 		
 		$this->stmt = $this->db->prep("INSERT INTO `Message` (creator_id, message_body, create_date, parent_message_id) VALUES (:creator_id, :message_body, :create_date, :parent_message_id)");
 		$this->stmt->execute(array(
-			':creator_id' => $creator_id,
-			':message_body' => $message_body,
-			':create_date' => $date,
-			':parent_message_id' => $parent_message_id
+			':creator_id'			=>	$creator_id,
+			':message_body'			=>	$message_body,
+			':create_date'			=>	$date,
+			':parent_message_id'	=>	$parent_message_id
 		));
 		$this->stmt = $this->db->prep("SELECT LAST_INSERT_ID()");
 		$this->stmt->execute();
@@ -174,9 +174,9 @@ class User
 
 		$this->stmt = $this->db->prep("INSERT INTO `Message_Recipient` (recipient_id, recipient_group_id, message_id) VALUES (:recipient_id, :recipient_group_id, :message_id)");
 		$execution_result = $this->stmt->execute(array(
-			':recipient_id' => $recipient_id,
-			':recipient_group_id' => $group_id,
-			':message_id' => $message_id
+			':recipient_id'			=>	$recipient_id,
+			':recipient_group_id'	=>	$group_id,
+			':message_id'			=>	$message_id
 		));
 
 		return $execution_result;
@@ -232,6 +232,65 @@ class User
 		return $chat_recip_info;
 	}
 
+	// Responsible for deleting already existing tokens for users who need to reset their passwords
+	public function deleteToken($email){
+		$this->stmt = $this->db->prep("DELETE FROM `Password_Reset` WHERE `email`=:email;");
+		$this->stmt->bindParam(':email', $email);
+		$this->stmt->execute();
+	}
+
+	public function addToken($resetInfo){
+		$this->stmt = $this->db->prep("INSERT INTO `Password_Reset` (email, selector,token,expires) VALUES (:email, :selector, :token, :expires); ");
+		$execution_result = $this->stmt->execute(array(
+			':email'	=>	$resetInfo['email'],
+			':selector'	=>	$resetInfo['selector'],
+			':token' 	=>	$resetInfo['token'],
+			':expires'	=>	$resetInfo['expires']
+		));
+	}
+
+	public function changePassword($selector, $validator,$password){
+		// Retrieving selector and expires time from Password_Reset table
+		$this->stmt = $this->db->prep("SELECT * FROM `Password_Reset` WHERE `selector`=:selector AND `expires`>=:time");
+		$this->stmt->bindParam(':selector', $selector);
+		$this->stmt->bindParam(':time',time());
+		$this->stmt->execute();
+		$result = $this->stmt->fetchAll(PDO::FETCH_ASSOC);
+		// if no info exists, then...
+		if(empty($result)){
+			return "There was an error processing your request.";
+		}
+		$auth_token = $result[0];
+		$calc = hash('sha256', hex2bin($validator));
+
+		// Validate Tokens
+		if(hash_equals($calc, $auth_token["token"])){
+			$user = $this->userExists($auth_token["email"]);
+			// if the user doesn't exist
+			if($user === false){
+				return "There was an error processing your request.";
+			}
+
+			// Update Password
+			$this->stmt = $this->db->prep("UPDATE `Users` SET password=:password WHERE email=:email;");
+			$this->stmt->bindParam(':password', $password);
+			$this->stmt->bindParam(':email', $auth_token["email"]);
+			$this->stmt->execute();
+			$row = $this->stmt->rowCount();
+
+			// Delete any existing password reset AND remember me tokens for this user
+			$this->stmt = $this->db->prep("DELETE FROM Password_Reset WHERE email=:email;");
+			$this->stmt->bindParam(':email', $auth_token["email"]);
+			$this->stmt->execute();
+
+			if($row != 0){
+				return true;
+			}
+
+		}
+		//var_dump($auth_token["token"]);
+		return false;
+	}
 
 }
 	
