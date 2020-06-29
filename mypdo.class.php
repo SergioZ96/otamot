@@ -1,5 +1,7 @@
 <?php
-require('config.php');
+require 'vendor/autoload.php';
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 class MyPDO{
 	
@@ -15,7 +17,7 @@ class MyPDO{
 						PDO::ATTR_EMULATE_PREPARES => FALSE,
 						PDO::MYSQL_ATTR_FOUND_ROWS => TRUE
 			);
-			$this->pdo = new PDO(DSN, USERNAME, PASSWORD, $options);
+			$this->pdo = new PDO($_ENV['DSN'], $_ENV['USER'], $_ENV['PASSWORD'], $options);
 		}
 		
 		// a classical static method to make it universally available

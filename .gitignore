@@ -1,1 +1,5 @@
-config.php
+.env
+node_modules
+composer.lock
+package-lock.json
+vendor

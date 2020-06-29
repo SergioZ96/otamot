@@ -1,0 +1,23 @@
+{
+  "name": "otamot-socket",
+  "version": "1.0.0",
+  "description": "Socket.io functionality for messaging",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SergioZ96/otamot.git"
+  },
+  "author": "Sergio Zurita",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SergioZ96/otamot/issues"
+  },
+  "homepage": "https://github.com/SergioZ96/otamot#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}

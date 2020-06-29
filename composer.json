@@ -1,5 +1,7 @@
 {
     "require": {
-        "mailjet/mailjet-apiv3-php": "^1.4"
+        "mailjet/mailjet-apiv3-php": "^1.4",
+        "wisembly/elephant.io": "^3.3",
+        "vlucas/phpdotenv": "^5.0"
     }
 }

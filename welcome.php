@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 
 # if user types otamotweb.com/otamot/welcome and user is not logged in (starting a session), then redirects to main website 
 if(strpos($_SERVER['REQUEST_URI'],'welcome') !== false && !isset($_SESSION['login_username'])) {
-	header('Location: https://www.otamotweb.com');
+	header('Location: http://otamot.local/login.php');
 }
 
 # if user types 'url'.php but also the user is currently logged in and already in the welcome page, it will just return welcome without .php extension
@@ -32,7 +32,7 @@ date_default_timezone_set('America/New_York');
     <head>
         <title>Welcome</title>
         <link rel="stylesheet" href="css/welcome.css" type="text/css" />
-        <link rel="icon" href="/otamot/otamot_no_title.png">
+        <link rel="icon" href="otamot_no_title.png">
         <style>
             .thumbnail {
                 height: 10%;
@@ -112,7 +112,7 @@ date_default_timezone_set('America/New_York');
             
             <div class="sidebar">
                 <div class="otamot_logo">
-                    <img src="/otamot/otamot_logo.png" alt="otamot logo" width="90px" height="90px">
+                    <img src="otamot_logo.png" alt="otamot logo" width="90px" height="90px">
                 </div>
                 <div class="newMess_and_Search">
                     <button id="new_message_btn" class="new_message_button" type="submit" name="new_message"><b>New Message</b></button>

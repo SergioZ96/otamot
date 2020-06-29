@@ -17,15 +17,16 @@ require_once('user.class.php');
 include('welcome_helper.php');
 
 require 'vendor/autoload.php';
+
 use \Mailjet\Resources;
 
 
 
 # if user types otamotweb.com/otamot/login.php , then will redirect to just the main website. Disallows url with .php extension
-if(strpos($_SERVER['REQUEST_URI'],'login.php') !== false) {
+/* if(strpos($_SERVER['REQUEST_URI'],'login.php') !== false) {
 	header('Location: https://www.otamotweb.com');
 }
-
+ */
 function registerUser(User $user){
 	/*
 		Args: User object
@@ -121,7 +122,7 @@ function loginUser(User $user){
 	}
 		
 }
-
+/*
 function forgotPassword(User $user){
 
 	// retrieve password from the form
@@ -181,6 +182,7 @@ function forgotPassword(User $user){
 	//$response->success() && var_dump($response->getData());
 	
 }
+*/
 ?>
 
 <!DOCTYPE html>
@@ -188,7 +190,7 @@ function forgotPassword(User $user){
 <head>
 	<title>Otamot</title>
 
-	<link rel="stylesheet" type="text/css" href="/otamot/css/login.css">
+	<link rel="stylesheet" type="text/css" href="css/login.css">
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script type="text/javascript">
@@ -230,7 +232,7 @@ function forgotPassword(User $user){
 	</script>
 </head>
 <body>
-		<img src="/otamot/otamot_logo.png" alt="otamot logo">
+		<img src="otamot_logo.png" alt="otamot logo">
 		<!--<h1>Otamot Welcomes You!</h1>-->
 		<br>
 
@@ -286,7 +288,7 @@ function forgotPassword(User $user){
 		}
 
 		if(isset($_POST['forgetPass_submit']) && !empty($_POST['email_forpass'])){
-			forgotPassword($user);
+			//forgotPassword($user);
 			//header("location: /otamot/reset_password");
 			Echo 
 			"<div class=container>
