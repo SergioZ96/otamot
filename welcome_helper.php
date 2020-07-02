@@ -8,8 +8,20 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 
+include("vendor/autoload.php");
+
 require_once('mypdo.class.php');
 require_once('user.class.php');
+require('socket.class.php');
+
+use ElephantIO\Client;
+use ElephantIO\Engine\SocketIO\Version2X;
+
+$version = new Version2X("http://localhost:3001");
+$client = new Client($version);
+// Making new socket
+$socket = new Socket($client);
+
 
 date_default_timezone_set('America/New_York');
 
@@ -115,10 +127,19 @@ function sendMessage(User $user){
 
 }
 
-function chatThumbs(User $user) {
+/*
+    Under socket.class.php implementation with Socket.io
+*/
+
+function chatThumbs(User $user, Socket $socket) {
     $user_id = $user->getUserid($_POST['login_username']);
     $chat_records = $user->recipRecord($user_id);
-    echo json_encode($chat_records);
+    if(!empty($chat_records)){
+        $socket->thumbLoader(json_encode($chat_records));
+        //echo "success";
+    }
+    //echo "failure";
+    //echo json_encode($chat_records);
 }
 
 // Function needed to load chats between two users. Will also be working with jQuery
@@ -127,8 +148,10 @@ function loadChat(User $user){
     $user_id = $user->getUserId($_SESSION['login_username']);
     $recip_id = $_POST['recip_id'];
     $group_id = $_POST['group_id'];
-    $parent_message_id = $user->lastMessage($group_id);
 
+    $parent_message_id = $user->lastMessage($group_id);
+    
+    
     $id_array = array((int)$group_id, (int)$user_id, (int)$recip_id, (int)$parent_message_id);
     // contains the messages of a group/chat
     $chat_messages_info = $user->getMessages($_POST['group_id']);
@@ -137,6 +160,8 @@ function loadChat(User $user){
     $convo_data_array = array("id_array" => json_encode($id_array), "chat_messages" => $chat_messages_info);
     
     echo json_encode($convo_data_array);
+    
+    
 }
 
 // Function handler that works upon receiving type value from jQuery post
@@ -156,7 +181,7 @@ if(isset($_POST["type"])){
             sendMessage($user);
 	        break;
 	    case "chatThumbs":
-	        chatThumbs($user);
+	        chatThumbs($user, $socket);
             break;
         case "loadChat":
             loadChat($user);

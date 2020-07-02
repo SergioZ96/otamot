@@ -141,20 +141,20 @@ $(document).ready(function() {
         function(data){ 
             // data holds JSON representation as string
             // ex. "[{"username":"charliegeorge","user_id":3,"group_id":1},...]"
-            var obj = JSON.parse(data); // converts string to JSON object
+            //var obj = JSON.parse(data); // converts string to JSON object
             // ex. 0 : {username: "charliegeorge", user_id: 3, group_id: 1}
-            var i, usernames = "";
-            
+            //var i, usernames = "";
+            /* 
             for (i = 0; i < obj.length ; i++){
                 usernames += "<button id='thumbnail" + obj[i].group_id + "' class='thumbnail' data-value='" + obj[i].user_id + "' value='" + obj[i].group_id + "'>" + obj[i].username + "</button>"; // we concatenate all usernames within JSON object
             }
             $("#message_list").html(usernames).show();
-            
+             */
             /*
              *  Loads chat messages specific to recipient/chat after clicking recipient's thumbnail
              *  Proceeds with creating HTML strings for each message pertaining to the chat
              */
-            
+            /* 
             $('.thumbnail').click(function() {
                 
                 // responsible for removing dynamically created HTML messages when another thumbnail is clicked
@@ -168,8 +168,8 @@ $(document).ready(function() {
 
                 var recip_id = $(this).attr("data-value");
                 var group_id = $(this).attr("value");
-
-                //if interval is already running
+ */
+              /* 
                 if(interval){
                     //clear it
                     clearInterval(interval);
@@ -184,11 +184,11 @@ $(document).ready(function() {
                     interval = setTimeout(updateMessages, 100, recip_id, group_id);
                     
                     interval = setInterval(updateMessages, 5000, recip_id, group_id);
-                }
+                } */
                 
                 
-            });
-        
+            //});
+            //console.log(data);
         });
 
         /*

@@ -114,7 +114,8 @@ function loginUser(User $user){
 			$_SESSION['login_username'] = $login_result;
 
 			// will jump to the welcome page
-			header("location: /otamot/welcome");
+			header("location: http://otamot.local/welcome.php");
+			exit();
 		}
 		else {
 			echo "Invalid username/password";
@@ -183,8 +184,28 @@ function forgotPassword(User $user){
 	
 }
 */
-?>
 
+$mypdo = new MyPDO();
+$user = new User();
+
+if(isset($_POST['reg_submit'])){
+
+	registerUser($user);
+}
+
+if(isset($_POST['login_submit'])){
+	loginUser($user);
+}
+
+if(isset($_POST['forgetPass_submit']) && !empty($_POST['email_forpass'])){
+	//forgotPassword($user);
+	//header("location: /otamot/reset_password");
+	Echo 
+	"<div class=container>
+		<h1>A Password Reset Link Has Been Sent To Your Email!</h1>
+	</div>";
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -196,11 +217,11 @@ function forgotPassword(User $user){
 	<script type="text/javascript">
 	
 		$(document).ready(function() {
-			$("#email_verifier").load('/otamot/welcome_helper.php').show();
+			$("#email_verifier").load('welcome_helper.php').show();
 
 			$(".forgetField").keyup(function() {
 				var email_input = $(".forgetField").val();
-				$.post('/otamot/welcome_helper.php', { email: email_input, type: "emailCheck"}, 
+				$.post('welcome_helper.php', { email: email_input, type: "emailCheck"}, 
 				function(data) {
 					$("#email_verifier").html(data).show();
 
@@ -273,28 +294,5 @@ function forgotPassword(User $user){
 
 		<button class="forgotPassword" onclick="formShow(3)">Forgot Password?</button>
 
-		<?php 
-
-		$mypdo = new MyPDO();
-		$user = new User();
-
-		if(isset($_POST['reg_submit'])){
-
-			registerUser($user);
-		}
-
-		if(isset($_POST['login_submit'])){
-			loginUser($user);
-		}
-
-		if(isset($_POST['forgetPass_submit']) && !empty($_POST['email_forpass'])){
-			//forgotPassword($user);
-			//header("location: /otamot/reset_password");
-			Echo 
-			"<div class=container>
-				<h1>A Password Reset Link Has Been Sent To Your Email!</h1>
-			</div>";
-		}
-		?>
 </body>
 </html>

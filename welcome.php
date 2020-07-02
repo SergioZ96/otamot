@@ -7,18 +7,19 @@ ini_set('display_startup_errors',1);
 error_reporting(E_ALL);
 
 # if user types otamotweb.com/otamot/welcome and user is not logged in (starting a session), then redirects to main website 
-if(strpos($_SERVER['REQUEST_URI'],'welcome') !== false && !isset($_SESSION['login_username'])) {
+/* if(strpos($_SERVER['REQUEST_URI'],'welcome') !== false && !isset($_SESSION['login_username'])) {
 	header('Location: http://otamot.local/login.php');
-}
+} */
 
 # if user types 'url'.php but also the user is currently logged in and already in the welcome page, it will just return welcome without .php extension
-if(strpos($_SERVER['REQUEST_URI'],'welcome.php') !== false && isset($_SESSION['login_username'])) {
+/* if(strpos($_SERVER['REQUEST_URI'],'welcome.php') !== false && isset($_SESSION['login_username'])) {
 	header('Location: welcome');
-}
+} */
 
 require_once('mypdo.class.php');
 require_once('user.class.php');
 include('welcome_helper.php');
+
 
 date_default_timezone_set('America/New_York');
 
@@ -81,6 +82,14 @@ date_default_timezone_set('America/New_York');
         </script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+        <script>
+            var socket = io.connect("http://localhost:3001");
+
+            socket.on("load_thumbs", (data) => { // receiving the spruced up chat thumbnail records
+                $("#message_list").html(data).show(); // display the thumbnails
+            });
+        </script>
 
         <script> 
 

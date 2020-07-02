@@ -1,16 +1,11 @@
-<!DOCTYPE html>
-<html>
+<?php
+    # we have to start the session to begin working with the current user's session
+    session_start();
 
-    <body>
-        <?php
-            # we have to start the session to begin working with the current user's session
-            session_start();
-        
-            # setting the session to a new empty array and clear all variables
-            $_SESSION = array();
+    # setting the session to a new empty array and clear all variables
+    $_SESSION = array();
 
-            session_destroy();
-            header("location: https://www.otamotweb.com");
-        ?>
-    </body>
-</html>
+    session_destroy();
+    //header("location: https://www.otamotweb.com");
+    header("location: http://otamot.local/login.php");
+?>
